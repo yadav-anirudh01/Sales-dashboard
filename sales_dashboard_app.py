@@ -366,8 +366,6 @@ class AIAnalyticsEngine:
         predictions = model.predict(future_ordinals)
         return future_dates, np.clip(predictions, a_min=0, a_max=None)
 
-
-class DashboardTab(ctk.CTkFrame):
     def __init__(self, parent):
         super().__init__(parent, corner_radius=16, fg_color="#111318")
         self.engine = AIAnalyticsEngine()
