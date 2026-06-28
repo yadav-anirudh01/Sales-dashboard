@@ -207,7 +207,6 @@ class DataController:
 
             records = query.all()
             
-            # Return as a list of dicts for easy DataFrame conversion in Streamlit
             return [
                 {
                     "ID": r.sale_id,
@@ -349,11 +348,90 @@ class AIAnalyticsEngine:
 # -----------------------------------------------------------------------------
 st.set_page_config(page_title="Datacore Pro // Enterprise Analytics", layout="wide", page_icon="📈")
 
+# Premium Custom CSS Injection for Glassmorphic Dark UI and Smooth Interactions
+st.markdown("""
+    <style>
+        /* Base Background Canvas Gradient */
+        .stApp {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            color: #E2E8F0;
+        }
+        
+        /* Modern Glassmorphic Cards Container styling */
+        div[data-testid="stMetric"] {
+            background: rgba(30, 41, 59, 0.45);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 20px 24px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+            transition: transform 0.25s ease, border-color 0.25s ease;
+        }
+        div[data-testid="stMetric"]:hover {
+            transform: translateY(-4px);
+            border-color: rgba(99, 102, 241, 0.4);
+        }
+        
+        /* Custom Info/Highlight Callouts */
+        .custom-card {
+            background: rgba(30, 41, 59, 0.6);
+            border-left: 5px solid #6366F1;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+        
+        /* Form, Input Fields & Dropdowns custom wrapping */
+        div[data-testid="stForm"] {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 24px !important;
+        }
+        
+        /* Button Transitions and Premium Effects */
+        .stButton>button {
+            border-radius: 10px !important;
+            background: linear-gradient(90deg, #4F46E5 0%, #6366F1 100%) !important;
+            color: white !important;
+            font-weight: 600 !important;
+            border: none !important;
+            padding: 10px 24px !important;
+            box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.4) !important;
+            transition: all 0.3s ease-in-out !important;
+        }
+        .stButton>button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px 0 rgba(99, 102, 241, 0.6) !important;
+        }
+        
+        /* Secondary Action Buttons (e.g., Download, Primary Destructive) */
+        div[data-testid="stDownloadButton"]>button {
+            border-radius: 10px !important;
+            background: rgba(51, 65, 85, 0.6) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: #F8FAFC !important;
+            transition: all 0.25s ease !important;
+        }
+        div[data-testid="stDownloadButton"]>button:hover {
+            background: rgba(71, 85, 105, 0.8) !important;
+            border-color: #6366F1 !important;
+        }
+        
+        /* Sidebar Styling Fixes */
+        section[data-testid="stSidebar"] {
+            background-color: #0B0F19 !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 engine_instance = AIAnalyticsEngine()
 
-# --- Sidebar ---
+# --- Sidebar Navigation Control ---
 st.sidebar.title("DATACORE // PRO AI")
-st.sidebar.caption("Enterprise Control Dock v3.0")
+st.sidebar.caption("Enterprise Control Dock v3.5")
 st.sidebar.markdown("---")
 
 menu = st.sidebar.radio(
@@ -369,132 +447,163 @@ menu = st.sidebar.radio(
 )
 
 st.sidebar.markdown("---")
-st.sidebar.success("🟢 SYSTEM ENG ACTIVE")
+st.sidebar.markdown(
+    """
+    <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10B981; border-radius: 8px; padding: 10px; text-align: center;">
+        <span style="color: #10B981; font-weight: bold; font-size: 13px;">🟢 SYSTEM ENG ACTIVE</span>
+    </div>
+    """, 
+    unsafe_allow_html=True
+)
 
-# --- Views ---
+# --- Application Switchboard Views ---
 
 if menu == "📊 Executive Dashboard":
     st.title("Welcome Back, Administrator 👋")
     st.caption(f"Sales Analytics Control Center • Last Updated: {datetime.datetime.now().strftime('%A, %B %d, %Y')}")
     st.divider()
 
-    metrics = engine_instance.generate_kpi_summary()
+    with st.spinner("Processing live operational ledger..."):
+        metrics = engine_instance.generate_kpi_summary()
 
-    # KPI Cards
+    # Premium KPI Cards Row
     col1, col2, col3, col4 = st.columns(4)
-    col1.metric("Total Gross Revenue", f"${metrics['revenue']:,.2f}", delta="Yield Metrics", delta_color="normal")
-    col2.metric("Operational Profit", f"${metrics['profit']:,.2f}", delta="Net Margins", delta_color="normal")
-    col3.metric("Volumetric Orders", metrics['orders'], delta="Transactions")
+    col1.metric("Total Gross Revenue", f"${metrics['revenue']:,.2f}", delta="Yield Metrics")
+    col2.metric("Operational Profit", f"${metrics['profit']:,.2f}", delta="Net Margins")
+    col3.metric("Volumetric Orders", f"{metrics['orders']:,}", delta="Transactions")
     col4.metric("Average Ticket Value", f"${metrics['avg_ticket']:,.2f}")
     
     st.markdown("<br>", unsafe_allow_html=True)
+    
+    # Context Asset Badges using Styled Containers
     m1, m2, m3 = st.columns(3)
     with m1:
-        st.info(f"**Alpha Product Asset:** 🏆 {metrics['top_product']}")
+        st.markdown(f'<div class="custom-card"><strong>Alpha Product Asset:</strong><br>🏆 {metrics["top_product"]}</div>', unsafe_allow_html=True)
     with m2:
-        st.info(f"**Top Segment Category:** 📁 {metrics['top_cat']}")
+        st.markdown(f'<div class="custom-card"><strong>Top Segment Category:</strong><br>📁 {metrics["top_cat"]}</div>', unsafe_allow_html=True)
     with m3:
-        st.info(f"**Dominant Sales Region:** 🌎 {metrics['top_region']}")
+        st.markdown(f'<div class="custom-card"><strong>Dominant Sales Region:</strong><br>🌎 {metrics["top_region"]}</div>', unsafe_allow_html=True)
 
     st.divider()
 
-    # Analytics Matrix (Charts)
+    # Visual Matrix Section
     df = engine_instance.get_clean_dataframe()
     if df.empty:
         st.warning("No enterprise records initialized yet. Please populate database variables in the Data Management tab.")
     else:
+        # Dark style palette configurations for Matplotlib matching dashboard theme
+        plt.style.use('dark_background')
         fig, axes = plt.subplots(2, 3, figsize=(18, 10))
+        fig.patch.set_facecolor('#0F172A')
         plt.subplots_adjust(hspace=0.4, wspace=0.3)
 
         # 1. Daily Revenue
         daily_sales = df.groupby('sale_date')['total_sales'].sum()
-        axes[0, 0].plot(daily_sales.index, daily_sales.values, color='#6366F1', marker='o')
-        axes[0, 0].set_title("Daily Revenue Velocity")
-        axes[0, 0].tick_params(axis='x', rotation=45)
+        axes[0, 0].plot(daily_sales.index, daily_sales.values, color='#6366F1', marker='o', linewidth=2)
+        axes[0, 0].set_title("Daily Revenue Velocity", color='#E2E8F0', pad=10)
+        axes[0, 0].tick_params(axis='x', rotation=45, colors='#94A3B8')
+        axes[0, 0].set_facecolor('#1E293B')
 
         # 2. Monthly Sales
         df['month_period'] = df['sale_date'].dt.to_period('M').astype(str)
         monthly_sales = df.groupby('month_period')['total_sales'].sum()
         axes[0, 1].bar(monthly_sales.index, monthly_sales.values, color='#3B82F6')
-        axes[0, 1].set_title("Monthly Sales Distribution")
-        axes[0, 1].tick_params(axis='x', rotation=45)
+        axes[0, 1].set_title("Monthly Sales Distribution", color='#E2E8F0', pad=10)
+        axes[0, 1].tick_params(axis='x', rotation=45, colors='#94A3B8')
+        axes[0, 1].set_facecolor('#1E293B')
 
         # 3. Net Capital Profit Trend
         daily_profit = df.groupby('sale_date')['total_profit'].sum()
-        axes[0, 2].plot(daily_profit.index, daily_profit.values, color='#10B981', marker='s')
-        axes[0, 2].set_title("Net Capital Profit Trend")
-        axes[0, 2].tick_params(axis='x', rotation=45)
+        axes[0, 2].plot(daily_profit.index, daily_profit.values, color='#10B981', marker='s', linewidth=2)
+        axes[0, 2].set_title("Net Capital Profit Trend", color='#E2E8F0', pad=10)
+        axes[0, 2].tick_params(axis='x', rotation=45, colors='#94A3B8')
+        axes[0, 2].set_facecolor('#1E293B')
 
         # 4. Top 5 Products
         top_prods = df.groupby('product_name')['total_sales'].sum().sort_values(ascending=False).head(5)
         axes[1, 0].barh(top_prods.index, top_prods.values, color='#8B5CF6')
-        axes[1, 0].set_title("Top 5 Product Assets")
+        axes[1, 0].set_title("Top 5 Product Assets", color='#E2E8F0', pad=10)
         axes[1, 0].invert_yaxis()
+        axes[1, 0].tick_params(colors='#94A3B8')
+        axes[1, 0].set_facecolor('#1E293B')
 
         # 5. Category Mix
         cat_shares = df.groupby('category')['total_sales'].sum()
-        axes[1, 1].pie(cat_shares.values, labels=cat_shares.index, autopct='%1.1f%%', colors=['#6366F1', '#10B981', '#8B5CF6', '#F59E0B', '#EC4899'])
-        axes[1, 1].set_title("Categorical Mix Matrix")
+        axes[1, 1].pie(cat_shares.values, labels=cat_shares.index, autopct='%1.1f%%', colors=['#6366F1', '#10B981', '#8B5CF6', '#F59E0B', '#EC4899'], textprops={'color': "#E2E8F0"})
+        axes[1, 1].set_title("Categorical Mix Matrix", color='#E2E8F0', pad=10)
+        axes[1, 1].set_facecolor('#1E293B')
 
         # 6. Regional Weights
         reg_shares = df.groupby('region')['total_sales'].sum()
         axes[1, 2].bar(reg_shares.index, reg_shares.values, color='#06B6D4')
-        axes[1, 2].set_title("Regional Revenue Weights")
+        axes[1, 2].set_title("Regional Revenue Weights", color='#E2E8F0', pad=10)
+        axes[1, 2].tick_params(colors='#94A3B8')
+        axes[1, 2].set_facecolor('#1E293B')
 
-        # Format axes
+        # Format axes grids
         for ax in axes.flat:
-            ax.grid(True, alpha=0.3, linestyle=':')
+            ax.grid(True, alpha=0.15, linestyle=':')
+            ax.spines['top'].set_visible(false) if hasattr(ax, 'spines') else None
+            ax.spines['right'].set_visible(false) if hasattr(ax, 'spines') else None
 
         st.pyplot(fig)
 
 
 elif menu == "📝 Data Management":
     st.title("Data Management Engine")
+    st.caption("Inspect pipeline variables, add transactional assets, or adjust current schema records.")
+    st.write("<br>", unsafe_allow_html=True)
     
-    tabs = st.tabs(["View & Filter Database", "Add New Record", "Modify Existing Record"])
+    tabs = st.tabs(["🔍 View & Filter Database", "➕ Add New Record", "🔄 Modify Existing Record"])
     
     with tabs[0]:
-        st.subheader("Filter Matrix")
+        st.subheader("Filter Matrix Parameters")
         with st.form("filter_form"):
             col1, col2, col3 = st.columns(3)
             search_name = col1.text_input("Search Product Asset")
-            search_cat = col2.selectbox("Category", ["All", "Electronics", "Furniture", "Networking", "Apparel"])
-            search_region = col3.selectbox("Region", ["All", "North", "South", "East", "West"])
+            search_cat = col2.selectbox("Category Dropdown", ["All", "Electronics", "Furniture", "Networking", "Apparel"])
+            search_region = col3.selectbox("Region Dropdown", ["All", "North", "South", "East", "West"])
             
             col4, col5, col6 = st.columns(3)
-            start_date = col4.date_input("Start Date", value=None)
-            end_date = col5.date_input("End Date", value=None)
-            sort_by = col6.selectbox("Sort Engine", ["Date Desc", "Date Asc", "Revenue Desc", "Profit Desc", "Product Name"])
+            start_date = col4.date_input("Start Date Filter", value=None)
+            end_date = col5.date_input("End Date Filter", value=None)
+            sort_by = col6.selectbox("Sort Engine Priority", ["Date Desc", "Date Asc", "Revenue Desc", "Profit Desc", "Product Name"])
             
             filter_submitted = st.form_submit_button("🔄 Refresh Data Matrix")
         
-        records = DataController.get_filtered_records(
-            search_name, search_cat, search_region, start_date, end_date, sort_by
-        )
+        with st.spinner("Fetching active records..."):
+            records = DataController.get_filtered_records(
+                search_name, search_cat, search_region, start_date, end_date, sort_by
+            )
+        
         if records:
             df_records = pd.DataFrame(records)
-            st.dataframe(df_records, use_container_width=True, hide_index=True)
+            st.dataframe(
+                df_records.style.background_gradient(cmap='Blues', subset=['Total Sales', 'Profit']), 
+                use_container_width=True, 
+                hide_index=True
+            )
         else:
             st.info("No records match the current filter parameters.")
 
     with tabs[1]:
-        st.subheader("Commit New Entry")
+        st.subheader("Commit New Entry Vector")
         with st.form("add_record_form", clear_on_submit=True):
             a_col1, a_col2 = st.columns(2)
-            prod_name = a_col1.text_input("Product Name")
-            category = a_col2.selectbox("Category", ["Electronics", "Furniture", "Networking", "Apparel"])
+            prod_name = a_col1.text_input("Product Name Identifier")
+            category = a_col2.selectbox("Operational Category Segment", ["Electronics", "Furniture", "Networking", "Apparel"])
             
             a_col3, a_col4 = st.columns(2)
-            qty = a_col3.number_input("Quantity", min_value=1, step=1)
-            unit_price = a_col4.number_input("Unit Price ($)", min_value=0.0, step=0.5)
+            qty = a_col3.number_input("Quantity Volumetric Component", min_value=1, step=1)
+            unit_price = a_col4.number_input("Unit Price Baseline ($)", min_value=0.0, step=0.5)
             
             a_col5, a_col6 = st.columns(2)
-            cost_price = a_col5.number_input("Cost Price ($)", min_value=0.0, step=0.5)
-            region = a_col6.selectbox("Region", ["North", "South", "East", "West"])
+            cost_price = a_col5.number_input("Cost Price Target ($)", min_value=0.0, step=0.5)
+            region = a_col6.selectbox("Target Regional Territory", ["North", "South", "East", "West"])
             
-            sale_date = st.date_input("Sale Date", datetime.date.today())
+            sale_date = st.date_input("Sale Verification Date", datetime.date.today())
             
-            submit = st.form_submit_button("➕ Commit Entry")
+            submit = st.form_submit_button("➕ Commit Entry to System")
             if submit:
                 success, msg = DataController.add_sale_record(prod_name, category, qty, unit_price, cost_price, sale_date, region)
                 if success:
@@ -503,29 +612,30 @@ elif menu == "📝 Data Management":
                     st.error(msg)
 
     with tabs[2]:
-        st.subheader("Update or Drop Record")
+        st.subheader("Update or Drop Structural Record")
         all_recs = DataController.get_filtered_records()
         if not all_recs:
-            st.warning("No records exist in the system.")
+            st.warning("No records exist in the system architecture currently.")
         else:
             df_all = pd.DataFrame(all_recs)
-            st.dataframe(df_all[['ID', 'Product Asset', 'Date', 'Total Sales']], height=200, use_container_width=True)
+            st.dataframe(df_all[['ID', 'Product Asset', 'Date', 'Total Sales']], height=200, use_container_width=True, hide_index=True)
             
-            target_id = st.number_input("Target Record ID to Modify/Delete", min_value=1, step=1)
+            target_id = st.number_input("Target Record ID Sequence to Modify/Delete", min_value=1, step=1)
+            st.divider()
             
             col_u, col_d = st.columns(2)
             with col_u:
                 with st.form("update_form"):
-                    st.caption(f"Updating Record ID: {target_id}")
-                    u_prod_name = st.text_input("New Product Name")
-                    u_category = st.selectbox("New Category", ["Electronics", "Furniture", "Networking", "Apparel"])
-                    u_qty = st.number_input("New Quantity", min_value=1, step=1)
-                    u_unit_price = st.number_input("New Unit Price ($)", min_value=0.0, step=0.5)
-                    u_cost_price = st.number_input("New Cost Price ($)", min_value=0.0, step=0.5)
-                    u_region = st.selectbox("New Region", ["North", "South", "East", "West"])
-                    u_sale_date = st.date_input("New Sale Date")
+                    st.markdown(f"#### Update Values for ID: **{target_id}**")
+                    u_prod_name = st.text_input("New Product Name Input")
+                    u_category = st.selectbox("New Category Assignment", ["Electronics", "Furniture", "Networking", "Apparel"])
+                    u_qty = st.number_input("New Quantity Volume", min_value=1, step=1)
+                    u_unit_price = st.number_input("New Unit Price Index ($)", min_value=0.0, step=0.5)
+                    u_cost_price = st.number_input("New Cost Price Index ($)", min_value=0.0, step=0.5)
+                    u_region = st.selectbox("New Target Region Domain", ["North", "South", "East", "West"])
+                    u_sale_date = st.date_input("New Timestamp Vector")
                     
-                    if st.form_submit_button("🔄 Update Record"):
+                    if st.form_submit_button("🔄 Update Specified Record"):
                         success, msg = DataController.update_sale_record(
                             target_id, u_prod_name, u_category, u_qty, u_unit_price, u_cost_price, u_sale_date, u_region
                         )
@@ -535,7 +645,9 @@ elif menu == "📝 Data Management":
                         else:
                             st.error(msg)
             with col_d:
-                if st.button("🗑️ Drop Record (Delete)", type="primary"):
+                st.markdown("#### Destructive Actions Zone")
+                st.info("Dropping database records is permanent and will rewrite structural OLS modeling parameters.")
+                if st.button("🗑️ Drop Record Permanently (Delete)", type="primary", use_container_width=True):
                     success, msg = DataController.delete_sale_record(target_id)
                     if success:
                         st.success(msg)
@@ -545,12 +657,19 @@ elif menu == "📝 Data Management":
 
 
 elif menu == "🔮 Predictive ML Models":
-    st.title("Horizon Target Configuration")
+    st.title("Horizon Target Forecasting Configuration")
+    st.caption("Scikit-Learn Ordinary Least Squares (OLS) Linear Regression Processing Matrix.")
+    st.divider()
     
     col1, col2 = st.columns([1, 2])
     with col1:
-        horizon = st.selectbox("Forecast Horizon", ["30 Days Target", "90 Days Extended Target"])
-        st.caption("Model Specifications: Scikit-Learn Ordinary Least Squares (OLS) Linear Regression Engine Matrix.")
+        horizon = st.selectbox("Forecast Horizon Interval Selection", ["30 Days Target", "90 Days Extended Target"])
+        st.markdown("""
+        <div style="font-size: 13px; color:#94A3B8; background:rgba(255,255,255,0.02); padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.05)">
+            <strong>Engine Specifications:</strong><br>
+            Maps timeline vectors using chronological ordinals to execute linear trajectory optimizations on operational data streams.
+        </div>
+        """, unsafe_allow_html=True)
     
     horizon_days = 30 if "30" in horizon else 90
     df = engine_instance.get_clean_dataframe()
@@ -558,28 +677,32 @@ elif menu == "🔮 Predictive ML Models":
     if df.empty or len(df) < 3:
         st.warning("Insufficient vector density. Please supply more historical date metrics to generate models.")
     else:
+        plt.style.use('dark_background')
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
+        fig.patch.set_facecolor('#0F172A')
         
-        # Gross Revenue Forecast
+        # Gross Revenue Forecast Plot
         daily_sales = df.groupby('sale_date')['total_sales'].sum()
-        ax1.plot(daily_sales.index, daily_sales.values, color='#3B82F6', marker='o', label='Historical Track')
+        ax1.plot(daily_sales.index, daily_sales.values, color='#3B82F6', marker='o', label='Historical Track', linewidth=2)
         f_dates, f_preds = engine_instance.run_predictive_forecasting(horizon_days, 'total_sales')
         if len(f_dates) > 0:
             ax1.plot(f_dates, f_preds, color='#F59E0B', linestyle='--', linewidth=2, label=f'OLS Projection ({horizon_days}D)')
-        ax1.set_title("Gross Revenue Trajectory Forecast Model")
-        ax1.tick_params(axis='x', rotation=45)
-        ax1.grid(True, alpha=0.3)
+        ax1.set_title("Gross Revenue Trajectory Forecast Model", color='#E2E8F0')
+        ax1.tick_params(axis='x', rotation=45, colors='#94A3B8')
+        ax1.grid(True, alpha=0.15)
+        ax1.set_facecolor('#1E293B')
         ax1.legend()
 
-        # Profit Forecast
+        # Profit Forecast Plot
         daily_profit = df.groupby('sale_date')['total_profit'].sum()
-        ax2.plot(daily_profit.index, daily_profit.values, color='#10B981', marker='s', label='Historical Net Yield')
+        ax2.plot(daily_profit.index, daily_profit.values, color='#10B981', marker='s', label='Historical Net Yield', linewidth=2)
         f_dates_p, f_preds_p = engine_instance.run_predictive_forecasting(horizon_days, 'total_profit')
         if len(f_dates_p) > 0:
             ax2.plot(f_dates_p, f_preds_p, color='#EF4444', linestyle='--', linewidth=2, label=f'Profit Model Target ({horizon_days}D)')
-        ax2.set_title("Net Capital Margins Structural Forecast")
-        ax2.tick_params(axis='x', rotation=45)
-        ax2.grid(True, alpha=0.3)
+        ax2.set_title("Net Capital Margins Structural Forecast", color='#E2E8F0')
+        ax2.tick_params(axis='x', rotation=45, colors='#94A3B8')
+        ax2.grid(True, alpha=0.15)
+        ax2.set_facecolor('#1E293B')
         ax2.legend()
 
         st.pyplot(fig)
@@ -590,7 +713,8 @@ elif menu == "🤖 AI Strategic Analysis":
     st.caption("Automated prescriptive summaries and transactional alpha analytics models.")
     st.divider()
     
-    insights = engine_instance.generate_ai_insights_dictionary()
+    with st.spinner("Compiling automated strategic heuristics..."):
+        insights = engine_instance.generate_ai_insights_dictionary()
     
     sections = [
         ("🏆 Top Performing Corporate Assets", insights["top_products"], "Maximum volume metrics output vector."),
@@ -605,16 +729,36 @@ elif menu == "🤖 AI Strategic Analysis":
         ("📣 Promotional Outreach Targeted Deployment Matrix", insights["marketing_recommendations"], "Geo-targeted public scaling framework configuration.")
     ]
 
-    for title, desc, context in sections:
-        with st.container(border=True):
-            st.markdown(f"#### {title}")
-            st.markdown(f"**{desc}**")
-            st.caption(f"Context: {context}")
+    # Grid Display for Insights Matrix
+    for i in range(0, len(sections), 2):
+        col_left, col_right = st.columns(2)
+        
+        with col_left:
+            title, desc, context = sections[i]
+            st.markdown(f"""
+            <div style="background: rgba(30, 41, 59, 0.45); border: 1px solid rgba(255,255,255,0.06); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                <h4 style="color: #6366F1; margin-top:0;">{title}</h4>
+                <p style="font-size: 16px; font-weight: bold; margin: 8px 0; color: #F8FAFC;">{desc}</p>
+                <small style="color: #64748B;">Context: {context}</small>
+            </div>
+            """, unsafe_allow_html=True)
+            
+        if i + 1 < len(sections):
+            with col_right:
+                title, desc, context = sections[i+1]
+                st.markdown(f"""
+                <div style="background: rgba(30, 41, 59, 0.45); border: 1px solid rgba(255,255,255,0.06); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                    <h4 style="color: #10B981; margin-top:0;">{title}</h4>
+                    <p style="font-size: 16px; font-weight: bold; margin: 8px 0; color: #F8FAFC;">{desc}</p>
+                    <small style="color: #64748B;">Context: {context}</small>
+                </div>
+                """, unsafe_allow_html=True)
 
 
 elif menu == "📁 Reports & File Exports":
     st.title("Enterprise Financial Data Export Center")
     st.caption("Compile system variables into automated downstream ledgers and summaries.")
+    st.divider()
     
     df = engine_instance.get_clean_dataframe()
     
@@ -623,33 +767,36 @@ elif menu == "📁 Reports & File Exports":
     else:
         st.markdown("### Select Target Export Channel:")
         
-        # CSV Export
+        # CSV Export Card Block
+        st.markdown("#### 📄 Flat Ledger Formats")
         csv = df.to_csv(index=False).encode('utf-8')
         st.download_button(
-            label="📄 Export Core Ledger to Flat File (CSV)",
+            label="Export Core Ledger to Flat File (CSV)",
             data=csv,
             file_name='enterprise_ledger.csv',
             mime='text/csv',
             use_container_width=True
         )
         
-        st.write("") # Spacer
+        st.write("<br>", unsafe_allow_html=True)
         
-        # Excel Export
+        # Excel Export Card Block
+        st.markdown("#### 📈 Dynamic Workbook Sheets")
         excel_buffer = io.BytesIO()
         with pd.ExcelWriter(excel_buffer, engine='openpyxl') as writer:
             df.to_excel(writer, index=False, sheet_name='Ledger')
         st.download_button(
-            label="📈 Compile Operational Sheet Workbooks (XLSX)",
+            label="Compile Operational Sheet Workbooks (XLSX)",
             data=excel_buffer.getvalue(),
             file_name='enterprise_ledger.xlsx',
             mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             use_container_width=True
         )
         
-        st.write("") # Spacer
+        st.write("<br>", unsafe_allow_html=True)
 
-        # PDF Generation & Export
+        # PDF Compilation Card Block
+        st.markdown("#### 👑 High-Executive Summary Documents")
         metrics = engine_instance.generate_kpi_summary()
         insights = engine_instance.generate_ai_insights_dictionary()
         
@@ -690,7 +837,7 @@ elif menu == "📁 Reports & File Exports":
         
         pdf_bytes = pdf.output(dest='S').encode('latin1')
         st.download_button(
-            label="👑 Generate AI Executive Core Document (PDF)",
+            label="Generate AI Executive Core Document (PDF)",
             data=pdf_bytes,
             file_name="executive_summary.pdf",
             mime="application/pdf",
@@ -700,18 +847,24 @@ elif menu == "📁 Reports & File Exports":
 
 elif menu == "⚙️ System Settings":
     st.title("Infrastructure Controls & Preferences")
+    st.caption("Manage back-end schema specifications and database rollback systems.")
+    st.divider()
     
-    with st.container(border=True):
+    with st.container():
         st.subheader("Visual Presentation Theme")
-        st.info("Theme configuration (Dark/Light) is natively handled by Streamlit. You can modify this in the top right menu (Settings -> Theme).")
+        st.info("Theme presentation frameworks (Dark/Light Canvas variants) are natively handled by Streamlit. Customize layouts directly inside Settings -> Theme panels.")
 
-    with st.container(border=True):
+    st.write("<br>", unsafe_allow_html=True)
+
+    with st.container():
         st.subheader("Data Core Architecture Specifications Matrix")
         st.code(f"Database Model Form: SQLite 3 relational local engine\nTarget Active Endpoint Mapping: {DB_FILE}\nTable Validation Index: Schema definitions verified.", language="yaml")
     
-    with st.container(border=True):
+    st.write("<br>", unsafe_allow_html=True)
+
+    with st.container():
         st.subheader("Administrative Disaster Recovery & Backup Pipelines")
-        st.markdown("Ensure state preservation by downloading a direct physical copy of the SQLite binary.")
+        st.markdown("Ensure state preservation by downloading a direct physical backup copy of the SQLite runtime binary ledger.")
         
         if os.path.exists(DB_FILE):
             with open(DB_FILE, "rb") as file:
@@ -723,15 +876,16 @@ elif menu == "⚙️ System Settings":
                 )
         
         st.divider()
-        st.markdown("#### Database Overwrite (Restore)")
-        st.warning("Uploading a database file here will completely overwrite the existing data mappings.")
-        uploaded_db = st.file_uploader("Upload .db Backup File", type=["db"])
+        st.markdown("#### Database Overwrite (Restore Pipeline)")
+        st.warning("🚨 WARNING: Uploading a configuration file here completely rewrites and overwrites current data mappings.")
+        
+        uploaded_db = st.file_uploader("Upload .db Backup File Stream", type=["db"])
         if uploaded_db is not None:
-            if st.button("🚨 Confirm Core Overwrite"):
+            if st.button("🚨 Confirm Core Overwrite Sequence", type="primary"):
                 try:
-                    engine.dispose() # Drop connections
+                    engine.dispose()
                     with open(DB_FILE, "wb") as f:
                         f.write(uploaded_db.getbuffer())
-                    st.success("Database re-initialized from backup stream safely. Please refresh the page.")
+                    st.success("Database re-initialized from backup stream safely. Please refresh the page parameters.")
                 except Exception as e:
                     st.error(f"Database rewrite pipeline locked: {e}")
