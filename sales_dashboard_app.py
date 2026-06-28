@@ -735,5 +735,3 @@ elif menu == "⚙️ System Settings":
                     st.success("Database re-initialized from backup stream safely. Please refresh the page.")
                 except Exception as e:
                     st.error(f"Database rewrite pipeline locked: {e}")
-
-```
