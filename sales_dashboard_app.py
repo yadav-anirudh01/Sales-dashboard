@@ -1,3 +1,11 @@
+import streamlit as st
+
+st.set_page_config(
+    page_title="Elite Business Analytics Dashboard",
+    page_icon="📊",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 import sys
 import os
 import datetime
