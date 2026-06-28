@@ -3,5 +3,3 @@ pandas
 numpy
 matplotlib
 sqlalchemy
-scikit-learn
-fpdf
