@@ -4,10 +4,8 @@ import datetime
 import shutil
 import numpy as np
 import pandas as pd
-import customtkinter as ctk
+import streamlit as st
 import matplotlib.pyplot as plt
-from tkinter import ttk, messagebox, filedialog
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from sklearn.linear_model import LinearRegression
 from sqlalchemy import create_engine, Column, Integer, String, Numeric, Date, inspect, text
 from sqlalchemy.orm import sessionmaker, declarative_base
