@@ -344,85 +344,147 @@ class AIAnalyticsEngine:
 
 
 # -----------------------------------------------------------------------------
-# STREAMLIT UI IMPLEMENTATION
+# STREAMLIT UI IMPLEMENTATION - ELITE DYNAMIC EDITION
 # -----------------------------------------------------------------------------
 st.set_page_config(page_title="Datacore Pro // Enterprise Analytics", layout="wide", page_icon="📈")
 
-# Premium Custom CSS Injection for Glassmorphic Dark UI and Smooth Interactions
+# Elite Dynamic CSS Injection - Pure CSS animations, no heavy JS payloads
 st.markdown("""
     <style>
-        /* Base Background Canvas Gradient */
+        /* Keyframe Animations */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 10px rgba(99, 102, 241, 0.2); }
+            50% { box-shadow: 0 0 25px rgba(99, 102, 241, 0.6); }
+            100% { box-shadow: 0 0 10px rgba(99, 102, 241, 0.2); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Base Animated Background Canvas Gradient */
         .stApp {
-            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            background: linear-gradient(-45deg, #050B14, #0F172A, #1A1025, #081229);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             color: #E2E8F0;
         }
         
         /* Modern Glassmorphic Cards Container styling */
         div[data-testid="stMetric"] {
-            background: rgba(30, 41, 59, 0.45);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 2px solid #6366F1;
             border-radius: 16px;
             padding: 20px 24px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
-            transition: transform 0.25s ease, border-color 0.25s ease;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: fadeInUp 0.8s ease-out backwards;
         }
+        
         div[data-testid="stMetric"]:hover {
-            transform: translateY(-4px);
-            border-color: rgba(99, 102, 241, 0.4);
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(99, 102, 241, 0.8);
+            animation: pulseGlow 2s infinite;
         }
         
         /* Custom Info/Highlight Callouts */
         .custom-card {
-            background: rgba(30, 41, 59, 0.6);
-            border-left: 5px solid #6366F1;
-            padding: 16px;
-            border-radius: 8px;
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+            border-left: 4px solid #10B981;
+            border-right: 1px solid rgba(255,255,255,0.05);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 18px;
+            border-radius: 12px;
             margin-bottom: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+            animation: fadeInUp 1s ease-out backwards;
+        }
+        .custom-card:hover {
+            transform: translateX(5px);
+            border-left: 4px solid #34D399;
         }
         
         /* Form, Input Fields & Dropdowns custom wrapping */
         div[data-testid="stForm"] {
-            background: rgba(15, 23, 42, 0.6);
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(15, 23, 42, 0.7);
+            border-radius: 20px;
+            border: 1px solid rgba(99, 102, 241, 0.2);
             padding: 24px !important;
+            backdrop-filter: blur(10px);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+            animation: fadeInUp 0.6s ease-out;
         }
         
         /* Button Transitions and Premium Effects */
         .stButton>button {
-            border-radius: 10px !important;
-            background: linear-gradient(90deg, #4F46E5 0%, #6366F1 100%) !important;
+            border-radius: 12px !important;
+            background: linear-gradient(90deg, #4F46E5 0%, #7C3AED 100%) !important;
             color: white !important;
-            font-weight: 600 !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.5px;
             border: none !important;
-            padding: 10px 24px !important;
-            box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.4) !important;
+            padding: 12px 28px !important;
+            box-shadow: 0 4px 15px 0 rgba(124, 58, 237, 0.4) !important;
             transition: all 0.3s ease-in-out !important;
+            position: relative;
+            overflow: hidden;
         }
+        
+        /* Button Shine Effect */
+        .stButton>button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg);
+            transition: all 0.6s ease;
+        }
+        .stButton>button:hover::after {
+            left: 150%;
+        }
+        
         .stButton>button:hover {
-            transform: scale(1.02);
-            box-shadow: 0 6px 20px 0 rgba(99, 102, 241, 0.6) !important;
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 8px 25px 0 rgba(124, 58, 237, 0.6) !important;
         }
         
         /* Secondary Action Buttons (e.g., Download, Primary Destructive) */
         div[data-testid="stDownloadButton"]>button {
-            border-radius: 10px !important;
-            background: rgba(51, 65, 85, 0.6) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
-            color: #F8FAFC !important;
-            transition: all 0.25s ease !important;
+            border-radius: 12px !important;
+            background: rgba(30, 41, 59, 0.8) !important;
+            border: 1px solid #38BDF8 !important;
+            color: #E0F2FE !important;
+            transition: all 0.3s ease !important;
         }
         div[data-testid="stDownloadButton"]>button:hover {
-            background: rgba(71, 85, 105, 0.8) !important;
-            border-color: #6366F1 !important;
+            background: #0284C7 !important;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4) !important;
         }
         
-        /* Sidebar Styling Fixes */
+        /* Sidebar Styling */
         section[data-testid="stSidebar"] {
-            background-color: #0B0F19 !important;
-            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            background-color: rgba(5, 11, 20, 0.95) !important;
+            border-right: 1px solid rgba(99, 102, 241, 0.15);
+            backdrop-filter: blur(20px);
+        }
+        
+        /* Header Glow Text */
+        h1, h2, h3 {
+            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
         }
     </style>
 """, unsafe_allow_html=True)
@@ -431,7 +493,7 @@ engine_instance = AIAnalyticsEngine()
 
 # --- Sidebar Navigation Control ---
 st.sidebar.title("DATACORE // PRO AI")
-st.sidebar.caption("Enterprise Control Dock v3.5")
+st.sidebar.caption("Enterprise Control Dock v4.0 Elite")
 st.sidebar.markdown("---")
 
 menu = st.sidebar.radio(
@@ -449,8 +511,8 @@ menu = st.sidebar.radio(
 st.sidebar.markdown("---")
 st.sidebar.markdown(
     """
-    <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10B981; border-radius: 8px; padding: 10px; text-align: center;">
-        <span style="color: #10B981; font-weight: bold; font-size: 13px;">🟢 SYSTEM ENG ACTIVE</span>
+    <div style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.5); border-radius: 10px; padding: 12px; text-align: center; box-shadow: 0 0 15px rgba(16, 185, 129, 0.1);">
+        <span style="color: #34D399; font-weight: 800; font-size: 14px; letter-spacing: 1px; text-shadow: 0 0 8px rgba(52, 211, 153, 0.5);">🟢 SYSTEM ENG ACTIVE</span>
     </div>
     """, 
     unsafe_allow_html=True
@@ -478,11 +540,11 @@ if menu == "📊 Executive Dashboard":
     # Context Asset Badges using Styled Containers
     m1, m2, m3 = st.columns(3)
     with m1:
-        st.markdown(f'<div class="custom-card"><strong>Alpha Product Asset:</strong><br>🏆 {metrics["top_product"]}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="custom-card"><strong>Alpha Product Asset:</strong><br><span style="color:#60A5FA; font-size:18px;">🏆 {metrics["top_product"]}</span></div>', unsafe_allow_html=True)
     with m2:
-        st.markdown(f'<div class="custom-card"><strong>Top Segment Category:</strong><br>📁 {metrics["top_cat"]}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="custom-card"><strong>Top Segment Category:</strong><br><span style="color:#A78BFA; font-size:18px;">📁 {metrics["top_cat"]}</span></div>', unsafe_allow_html=True)
     with m3:
-        st.markdown(f'<div class="custom-card"><strong>Dominant Sales Region:</strong><br>🌎 {metrics["top_region"]}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="custom-card"><strong>Dominant Sales Region:</strong><br><span style="color:#34D399; font-size:18px;">🌎 {metrics["top_region"]}</span></div>', unsafe_allow_html=True)
 
     st.divider()
 
@@ -494,59 +556,63 @@ if menu == "📊 Executive Dashboard":
         # Dark style palette configurations for Matplotlib matching dashboard theme
         plt.style.use('dark_background')
         fig, axes = plt.subplots(2, 3, figsize=(18, 10))
-        fig.patch.set_facecolor('#0F172A')
+        fig.patch.set_facecolor('none') # Transparent background for the figure to blend with CSS gradient
         plt.subplots_adjust(hspace=0.4, wspace=0.3)
 
         # 1. Daily Revenue
         daily_sales = df.groupby('sale_date')['total_sales'].sum()
-        axes[0, 0].plot(daily_sales.index, daily_sales.values, color='#6366F1', marker='o', linewidth=2)
-        axes[0, 0].set_title("Daily Revenue Velocity", color='#E2E8F0', pad=10)
+        axes[0, 0].plot(daily_sales.index, daily_sales.values, color='#6366F1', marker='o', linewidth=2, markersize=6)
+        axes[0, 0].fill_between(daily_sales.index, daily_sales.values, color='#6366F1', alpha=0.1)
+        axes[0, 0].set_title("Daily Revenue Velocity", color='#F8FAFC', pad=10, fontweight='bold')
         axes[0, 0].tick_params(axis='x', rotation=45, colors='#94A3B8')
-        axes[0, 0].set_facecolor('#1E293B')
+        axes[0, 0].set_facecolor('none')
 
         # 2. Monthly Sales
         df['month_period'] = df['sale_date'].dt.to_period('M').astype(str)
         monthly_sales = df.groupby('month_period')['total_sales'].sum()
-        axes[0, 1].bar(monthly_sales.index, monthly_sales.values, color='#3B82F6')
-        axes[0, 1].set_title("Monthly Sales Distribution", color='#E2E8F0', pad=10)
+        axes[0, 1].bar(monthly_sales.index, monthly_sales.values, color='#3B82F6', alpha=0.8)
+        axes[0, 1].set_title("Monthly Sales Distribution", color='#F8FAFC', pad=10, fontweight='bold')
         axes[0, 1].tick_params(axis='x', rotation=45, colors='#94A3B8')
-        axes[0, 1].set_facecolor('#1E293B')
+        axes[0, 1].set_facecolor('none')
 
         # 3. Net Capital Profit Trend
         daily_profit = df.groupby('sale_date')['total_profit'].sum()
         axes[0, 2].plot(daily_profit.index, daily_profit.values, color='#10B981', marker='s', linewidth=2)
-        axes[0, 2].set_title("Net Capital Profit Trend", color='#E2E8F0', pad=10)
+        axes[0, 2].fill_between(daily_profit.index, daily_profit.values, color='#10B981', alpha=0.1)
+        axes[0, 2].set_title("Net Capital Profit Trend", color='#F8FAFC', pad=10, fontweight='bold')
         axes[0, 2].tick_params(axis='x', rotation=45, colors='#94A3B8')
-        axes[0, 2].set_facecolor('#1E293B')
+        axes[0, 2].set_facecolor('none')
 
         # 4. Top 5 Products
         top_prods = df.groupby('product_name')['total_sales'].sum().sort_values(ascending=False).head(5)
-        axes[1, 0].barh(top_prods.index, top_prods.values, color='#8B5CF6')
-        axes[1, 0].set_title("Top 5 Product Assets", color='#E2E8F0', pad=10)
+        axes[1, 0].barh(top_prods.index, top_prods.values, color='#8B5CF6', alpha=0.8)
+        axes[1, 0].set_title("Top 5 Product Assets", color='#F8FAFC', pad=10, fontweight='bold')
         axes[1, 0].invert_yaxis()
         axes[1, 0].tick_params(colors='#94A3B8')
-        axes[1, 0].set_facecolor('#1E293B')
+        axes[1, 0].set_facecolor('none')
 
         # 5. Category Mix
         cat_shares = df.groupby('category')['total_sales'].sum()
-        axes[1, 1].pie(cat_shares.values, labels=cat_shares.index, autopct='%1.1f%%', colors=['#6366F1', '#10B981', '#8B5CF6', '#F59E0B', '#EC4899'], textprops={'color': "#E2E8F0"})
-        axes[1, 1].set_title("Categorical Mix Matrix", color='#E2E8F0', pad=10)
-        axes[1, 1].set_facecolor('#1E293B')
+        axes[1, 1].pie(cat_shares.values, labels=cat_shares.index, autopct='%1.1f%%', colors=['#6366F1', '#10B981', '#8B5CF6', '#F59E0B', '#EC4899'], textprops={'color': "#F8FAFC", 'weight': 'bold'})
+        axes[1, 1].set_title("Categorical Mix Matrix", color='#F8FAFC', pad=10, fontweight='bold')
+        axes[1, 1].set_facecolor('none')
 
         # 6. Regional Weights
         reg_shares = df.groupby('region')['total_sales'].sum()
-        axes[1, 2].bar(reg_shares.index, reg_shares.values, color='#06B6D4')
-        axes[1, 2].set_title("Regional Revenue Weights", color='#E2E8F0', pad=10)
+        axes[1, 2].bar(reg_shares.index, reg_shares.values, color='#06B6D4', alpha=0.8)
+        axes[1, 2].set_title("Regional Revenue Weights", color='#F8FAFC', pad=10, fontweight='bold')
         axes[1, 2].tick_params(colors='#94A3B8')
-        axes[1, 2].set_facecolor('#1E293B')
+        axes[1, 2].set_facecolor('none')
 
         # Format axes grids
         for ax in axes.flat:
-            ax.grid(True, alpha=0.15, linestyle=':')
-            ax.spines['top'].set_visible(false) if hasattr(ax, 'spines') else None
-            ax.spines['right'].set_visible(false) if hasattr(ax, 'spines') else None
+            ax.grid(True, alpha=0.1, linestyle='--')
+            ax.spines['top'].set_visible(False)
+            ax.spines['right'].set_visible(False)
+            ax.spines['left'].set_color('#334155')
+            ax.spines['bottom'].set_color('#334155')
 
-        st.pyplot(fig)
+        st.pyplot(fig, transparent=True)
 
 
 elif menu == "📝 Data Management":
@@ -579,7 +645,7 @@ elif menu == "📝 Data Management":
         if records:
             df_records = pd.DataFrame(records)
             st.dataframe(
-                df_records.style.background_gradient(cmap='Blues', subset=['Total Sales', 'Profit']), 
+                df_records.style.background_gradient(cmap='Purples', subset=['Total Sales', 'Profit']), 
                 use_container_width=True, 
                 hide_index=True
             )
@@ -665,7 +731,7 @@ elif menu == "🔮 Predictive ML Models":
     with col1:
         horizon = st.selectbox("Forecast Horizon Interval Selection", ["30 Days Target", "90 Days Extended Target"])
         st.markdown("""
-        <div style="font-size: 13px; color:#94A3B8; background:rgba(255,255,255,0.02); padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.05)">
+        <div style="font-size: 13px; color:#94A3B8; background:rgba(15, 23, 42, 0.6); padding:16px; border-radius:12px; border:1px solid rgba(99, 102, 241, 0.3); backdrop-filter: blur(10px);">
             <strong>Engine Specifications:</strong><br>
             Maps timeline vectors using chronological ordinals to execute linear trajectory optimizations on operational data streams.
         </div>
@@ -679,33 +745,41 @@ elif menu == "🔮 Predictive ML Models":
     else:
         plt.style.use('dark_background')
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
-        fig.patch.set_facecolor('#0F172A')
+        fig.patch.set_facecolor('none')
         
         # Gross Revenue Forecast Plot
         daily_sales = df.groupby('sale_date')['total_sales'].sum()
         ax1.plot(daily_sales.index, daily_sales.values, color='#3B82F6', marker='o', label='Historical Track', linewidth=2)
         f_dates, f_preds = engine_instance.run_predictive_forecasting(horizon_days, 'total_sales')
         if len(f_dates) > 0:
-            ax1.plot(f_dates, f_preds, color='#F59E0B', linestyle='--', linewidth=2, label=f'OLS Projection ({horizon_days}D)')
-        ax1.set_title("Gross Revenue Trajectory Forecast Model", color='#E2E8F0')
+            ax1.plot(f_dates, f_preds, color='#F59E0B', linestyle='--', linewidth=3, label=f'OLS Projection ({horizon_days}D)')
+            ax1.fill_between(f_dates, f_preds, color='#F59E0B', alpha=0.1)
+        
+        ax1.set_title("Gross Revenue Trajectory Forecast Model", color='#F8FAFC', fontweight='bold')
         ax1.tick_params(axis='x', rotation=45, colors='#94A3B8')
         ax1.grid(True, alpha=0.15)
-        ax1.set_facecolor('#1E293B')
-        ax1.legend()
+        ax1.set_facecolor('none')
+        ax1.spines['top'].set_visible(False)
+        ax1.spines['right'].set_visible(False)
+        ax1.legend(facecolor='#0F172A', edgecolor='none')
 
         # Profit Forecast Plot
         daily_profit = df.groupby('sale_date')['total_profit'].sum()
         ax2.plot(daily_profit.index, daily_profit.values, color='#10B981', marker='s', label='Historical Net Yield', linewidth=2)
         f_dates_p, f_preds_p = engine_instance.run_predictive_forecasting(horizon_days, 'total_profit')
         if len(f_dates_p) > 0:
-            ax2.plot(f_dates_p, f_preds_p, color='#EF4444', linestyle='--', linewidth=2, label=f'Profit Model Target ({horizon_days}D)')
-        ax2.set_title("Net Capital Margins Structural Forecast", color='#E2E8F0')
+            ax2.plot(f_dates_p, f_preds_p, color='#EF4444', linestyle='--', linewidth=3, label=f'Profit Model Target ({horizon_days}D)')
+            ax2.fill_between(f_dates_p, f_preds_p, color='#EF4444', alpha=0.1)
+            
+        ax2.set_title("Net Capital Margins Structural Forecast", color='#F8FAFC', fontweight='bold')
         ax2.tick_params(axis='x', rotation=45, colors='#94A3B8')
         ax2.grid(True, alpha=0.15)
-        ax2.set_facecolor('#1E293B')
-        ax2.legend()
+        ax2.set_facecolor('none')
+        ax2.spines['top'].set_visible(False)
+        ax2.spines['right'].set_visible(False)
+        ax2.legend(facecolor='#0F172A', edgecolor='none')
 
-        st.pyplot(fig)
+        st.pyplot(fig, transparent=True)
 
 
 elif menu == "🤖 AI Strategic Analysis":
@@ -729,17 +803,17 @@ elif menu == "🤖 AI Strategic Analysis":
         ("📣 Promotional Outreach Targeted Deployment Matrix", insights["marketing_recommendations"], "Geo-targeted public scaling framework configuration.")
     ]
 
-    # Grid Display for Insights Matrix
+    # Grid Display for Insights Matrix with Elite Styling
     for i in range(0, len(sections), 2):
         col_left, col_right = st.columns(2)
         
         with col_left:
             title, desc, context = sections[i]
             st.markdown(f"""
-            <div style="background: rgba(30, 41, 59, 0.45); border: 1px solid rgba(255,255,255,0.06); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
-                <h4 style="color: #6366F1; margin-top:0;">{title}</h4>
-                <p style="font-size: 16px; font-weight: bold; margin: 8px 0; color: #F8FAFC;">{desc}</p>
-                <small style="color: #64748B;">Context: {context}</small>
+            <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(99, 102, 241, 0.2); border-top: 1px solid rgba(255,255,255,0.1); padding: 24px; border-radius: 16px; margin-bottom: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); backdrop-filter: blur(10px); animation: fadeInUp 0.8s ease-out backwards; transition: transform 0.3s ease;">
+                <h4 style="color: #818CF8; margin-top:0; letter-spacing: 0.5px;">{title}</h4>
+                <p style="font-size: 18px; font-weight: 700; margin: 12px 0; color: #F8FAFC;">{desc}</p>
+                <small style="color: #94A3B8; font-style: italic;">Context: {context}</small>
             </div>
             """, unsafe_allow_html=True)
             
@@ -747,10 +821,10 @@ elif menu == "🤖 AI Strategic Analysis":
             with col_right:
                 title, desc, context = sections[i+1]
                 st.markdown(f"""
-                <div style="background: rgba(30, 41, 59, 0.45); border: 1px solid rgba(255,255,255,0.06); padding: 20px; border-radius: 12px; margin-bottom: 20px;">
-                    <h4 style="color: #10B981; margin-top:0;">{title}</h4>
-                    <p style="font-size: 16px; font-weight: bold; margin: 8px 0; color: #F8FAFC;">{desc}</p>
-                    <small style="color: #64748B;">Context: {context}</small>
+                <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(16, 185, 129, 0.2); border-top: 1px solid rgba(255,255,255,0.1); padding: 24px; border-radius: 16px; margin-bottom: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); backdrop-filter: blur(10px); animation: fadeInUp 0.8s ease-out backwards; transition: transform 0.3s ease;">
+                    <h4 style="color: #34D399; margin-top:0; letter-spacing: 0.5px;">{title}</h4>
+                    <p style="font-size: 18px; font-weight: 700; margin: 12px 0; color: #F8FAFC;">{desc}</p>
+                    <small style="color: #94A3B8; font-style: italic;">Context: {context}</small>
                 </div>
                 """, unsafe_allow_html=True)
 
