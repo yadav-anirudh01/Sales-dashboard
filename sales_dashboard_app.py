@@ -6,6 +6,14 @@ import io
 import numpy as np
 import pandas as pd
 import streamlit as st
+
+st.set_page_config(
+    page_title="Elite Business Analytics Dashboard",
+    page_icon="📊",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from sqlalchemy import create_engine, Column, Integer, String, Numeric, Date, inspect, text
