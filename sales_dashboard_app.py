@@ -77,7 +77,7 @@ def get_db_session():
     return SessionLocal()
 
 # -----------------------------------------------------------------------------
-# CORE BUSINESS LOGIC (CONTROLLERS & ENGINES)
+# CORE BUSINESS LOGIC
 # -----------------------------------------------------------------------------
 class DataController:
     @staticmethod
@@ -344,175 +344,208 @@ class AIAnalyticsEngine:
 
 
 # -----------------------------------------------------------------------------
-# STREAMLIT UI IMPLEMENTATION - ELITE DYNAMIC EDITION
+# STREAMLIT UI IMPLEMENTATION - CRAZY SCI-FI HUD EDITION
 # -----------------------------------------------------------------------------
-st.set_page_config(page_title="Datacore Pro // Enterprise Analytics", layout="wide", page_icon="📈")
+st.set_page_config(page_title="Datacore OS // Tactical Link", layout="wide", page_icon="⚡")
 
-# Elite Dynamic CSS Injection - Pure CSS animations, no heavy JS payloads
+# Extreme Sci-Fi CSS Injection
 st.markdown("""
     <style>
+        /* Immersive Web Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@500;700&display=swap');
+
         /* Keyframe Animations */
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100vh); }
         }
         @keyframes pulseGlow {
-            0% { box-shadow: 0 0 10px rgba(99, 102, 241, 0.2); }
-            50% { box-shadow: 0 0 25px rgba(99, 102, 241, 0.6); }
-            100% { box-shadow: 0 0 10px rgba(99, 102, 241, 0.2); }
+            0% { box-shadow: 0 0 10px #00F0FF, inset 0 0 10px #00F0FF; }
+            50% { box-shadow: 0 0 30px #00F0FF, inset 0 0 20px #00F0FF; }
+            100% { box-shadow: 0 0 10px #00F0FF, inset 0 0 10px #00F0FF; }
         }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+            20%, 22%, 24%, 55% { opacity: 0.5; text-shadow: none; }
+        }
+        @keyframes dataStream {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 1000px; }
         }
 
-        /* Base Animated Background Canvas Gradient */
+        /* Tactical Grid Background */
         .stApp {
-            background: linear-gradient(-45deg, #050B14, #0F172A, #1A1025, #081229);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            background-color: #030712 !important;
+            background-image: 
+                linear-gradient(rgba(0, 240, 255, 0.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.07) 1px, transparent 1px);
+            background-size: 40px 40px;
             color: #E2E8F0;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        /* Scanline Overlay (Simulates CRT/Hologram screen) */
+        .stApp::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(to bottom, rgba(0,240,255,0), rgba(0,240,255,0.1) 50%, rgba(0,240,255,0));
+            background-size: 100% 8px;
+            animation: scanline 8s linear infinite;
+            pointer-events: none;
+            z-index: 9999;
         }
         
-        /* Modern Glassmorphic Cards Container styling */
+        /* Headers - Sci Fi Typography */
+        h1, h2, h3 {
+            font-family: 'Share Tech Mono', monospace !important;
+            color: #00F0FF !important;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 15px rgba(0, 240, 255, 0.6);
+            animation: flicker 4s infinite alternate;
+        }
+
+        /* HUD Style KPI Metrics Containers */
         div[data-testid="stMetric"] {
-            background: rgba(15, 23, 42, 0.55);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-            border-bottom: 2px solid #6366F1;
-            border-radius: 16px;
+            background: rgba(3, 7, 18, 0.8) !important;
+            border: 1px solid #00F0FF;
+            border-left: 5px solid #00F0FF;
+            border-right: 5px solid #00F0FF;
             padding: 20px 24px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            animation: fadeInUp 0.8s ease-out backwards;
-        }
-        
-        div[data-testid="stMetric"]:hover {
-            transform: translateY(-8px) scale(1.02);
-            border-color: rgba(99, 102, 241, 0.8);
-            animation: pulseGlow 2s infinite;
-        }
-        
-        /* Custom Info/Highlight Callouts */
-        .custom-card {
-            background: linear-gradient(145deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
-            border-left: 4px solid #10B981;
-            border-right: 1px solid rgba(255,255,255,0.05);
-            border-top: 1px solid rgba(255,255,255,0.05);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            padding: 18px;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease;
-            animation: fadeInUp 1s ease-out backwards;
-        }
-        .custom-card:hover {
-            transform: translateX(5px);
-            border-left: 4px solid #34D399;
-        }
-        
-        /* Form, Input Fields & Dropdowns custom wrapping */
-        div[data-testid="stForm"] {
-            background: rgba(15, 23, 42, 0.7);
-            border-radius: 20px;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            padding: 24px !important;
-            backdrop-filter: blur(10px);
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
-            animation: fadeInUp 0.6s ease-out;
-        }
-        
-        /* Button Transitions and Premium Effects */
-        .stButton>button {
-            border-radius: 12px !important;
-            background: linear-gradient(90deg, #4F46E5 0%, #7C3AED 100%) !important;
-            color: white !important;
-            font-weight: 700 !important;
-            letter-spacing: 0.5px;
-            border: none !important;
-            padding: 12px 28px !important;
-            box-shadow: 0 4px 15px 0 rgba(124, 58, 237, 0.4) !important;
-            transition: all 0.3s ease-in-out !important;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2), inset 0 0 20px rgba(0, 240, 255, 0.05);
             position: relative;
             overflow: hidden;
+            transition: all 0.3s ease;
         }
         
-        /* Button Shine Effect */
-        .stButton>button::after {
+        div[data-testid="stMetric"]::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
-            transform: skewX(-25deg);
-            transition: all 0.6s ease;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, transparent 40%, rgba(0,240,255,0.2) 50%, transparent 60%);
+            z-index: 1;
+            pointer-events: none;
         }
-        .stButton>button:hover::after {
-            left: 150%;
+
+        div[data-testid="stMetric"]:hover {
+            transform: scale(1.05);
+            animation: pulseGlow 1.5s infinite;
+            border-color: #FF00E6;
+        }
+        
+        /* Metric Label/Numbers styling */
+        div[data-testid="stMetricValue"] > div {
+            font-family: 'Share Tech Mono', monospace !important;
+            color: #39FF14 !important;
+            font-size: 2rem !important;
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+        }
+        div[data-testid="stMetricLabel"] {
+            color: #94A3B8 !important;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Tactical Insight Cards */
+        .hud-card {
+            background: linear-gradient(135deg, rgba(15,23,42,0.9) 0%, rgba(3,7,18,0.95) 100%);
+            border: 1px solid #39FF14;
+            padding: 20px;
+            clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+            margin-bottom: 16px;
+            box-shadow: 0 5px 20px rgba(57, 255, 20, 0.15);
+            position: relative;
+        }
+        .hud-card::after {
+            content: 'DATA LINK SECURE';
+            position: absolute;
+            bottom: 5px; right: 10px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 10px;
+            color: rgba(57,255,20,0.4);
+        }
+
+        /* Futuristic Form/Input Wrap */
+        div[data-testid="stForm"] {
+            background: rgba(3, 7, 18, 0.85);
+            border: 1px solid #FF00E6;
+            box-shadow: 0 0 20px rgba(255, 0, 230, 0.15), inset 0 0 15px rgba(255, 0, 230, 0.1);
+            padding: 24px !important;
+            border-radius: 0;
+            position: relative;
+        }
+        /* Top-left corner bracket for forms */
+        div[data-testid="stForm"]::before {
+            content: ''; position: absolute; top: 0; left: 0;
+            width: 20px; height: 20px;
+            border-top: 3px solid #00F0FF; border-left: 3px solid #00F0FF;
+        }
+        
+        /* Elite Button Styling */
+        .stButton>button {
+            border-radius: 0 !important;
+            background: transparent !important;
+            color: #00F0FF !important;
+            font-family: 'Share Tech Mono', monospace !important;
+            font-weight: bold !important;
+            letter-spacing: 2px;
+            border: 2px solid #00F0FF !important;
+            padding: 12px 28px !important;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s ease !important;
+            text-transform: uppercase;
         }
         
         .stButton>button:hover {
-            transform: translateY(-2px) scale(1.03);
-            box-shadow: 0 8px 25px 0 rgba(124, 58, 237, 0.6) !important;
+            background: rgba(0, 240, 255, 0.2) !important;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.8), inset 0 0 10px rgba(0, 240, 255, 0.5) !important;
+            text-shadow: 0 0 5px #FFF;
         }
-        
-        /* Secondary Action Buttons (e.g., Download, Primary Destructive) */
-        div[data-testid="stDownloadButton"]>button {
-            border-radius: 12px !important;
-            background: rgba(30, 41, 59, 0.8) !important;
-            border: 1px solid #38BDF8 !important;
-            color: #E0F2FE !important;
-            transition: all 0.3s ease !important;
+
+        /* Dataframe (Tables) Cyberpunk Styling */
+        .stDataFrame {
+            border: 1px solid #00F0FF !important;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
         }
-        div[data-testid="stDownloadButton"]>button:hover {
-            background: #0284C7 !important;
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4) !important;
-        }
-        
-        /* Sidebar Styling */
+
+        /* Sidebar Tech Styling */
         section[data-testid="stSidebar"] {
-            background-color: rgba(5, 11, 20, 0.95) !important;
-            border-right: 1px solid rgba(99, 102, 241, 0.15);
-            backdrop-filter: blur(20px);
-        }
-        
-        /* Header Glow Text */
-        h1, h2, h3 {
-            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+            background-color: rgba(3, 7, 18, 0.95) !important;
+            border-right: 2px solid #00F0FF;
+            box-shadow: 5px 0 30px rgba(0, 240, 255, 0.1);
         }
     </style>
 """, unsafe_allow_html=True)
 
 engine_instance = AIAnalyticsEngine()
 
-# --- Sidebar Navigation Control ---
-st.sidebar.title("DATACORE // PRO AI")
-st.sidebar.caption("Enterprise Control Dock v4.0 Elite")
+# --- Tactical Sidebar Control Panel ---
+st.sidebar.markdown("<h1 style='text-align: center; font-size: 28px;'>DATACORE // OS</h1>", unsafe_allow_html=True)
+st.sidebar.caption("SYS_VER: 9.0.1 [ELITE PROTOCOL]")
 st.sidebar.markdown("---")
 
 menu = st.sidebar.radio(
-    "Navigation Menu",
+    "TERMINAL DIRECTORY",
     [
-        "📊 Executive Dashboard",
-        "📝 Data Management",
-        "🔮 Predictive ML Models",
-        "🤖 AI Strategic Analysis",
-        "📁 Reports & File Exports",
-        "⚙️ System Settings"
+        "COMMAND HUD // Dashboard",
+        "MATRIX // Data Link",
+        "NEURAL NET // Forecast",
+        "AI ORACLE // Strategy",
+        "EXTRACT // Datacores",
+        "ROOT // Config"
     ]
 )
 
 st.sidebar.markdown("---")
 st.sidebar.markdown(
     """
-    <div style="background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.5); border-radius: 10px; padding: 12px; text-align: center; box-shadow: 0 0 15px rgba(16, 185, 129, 0.1);">
-        <span style="color: #34D399; font-weight: 800; font-size: 14px; letter-spacing: 1px; text-shadow: 0 0 8px rgba(52, 211, 153, 0.5);">🟢 SYSTEM ENG ACTIVE</span>
+    <div style="background: rgba(57, 255, 20, 0.05); border: 1px solid #39FF14; padding: 12px; text-align: center; box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);">
+        <span style="font-family: 'Share Tech Mono', monospace; color: #39FF14; font-weight: bold; font-size: 15px; letter-spacing: 2px; text-shadow: 0 0 8px #39FF14;">
+        >> DATALINK ACTIVE <<
+        </span>
     </div>
     """, 
     unsafe_allow_html=True
@@ -520,124 +553,121 @@ st.sidebar.markdown(
 
 # --- Application Switchboard Views ---
 
-if menu == "📊 Executive Dashboard":
-    st.title("Welcome Back, Administrator 👋")
-    st.caption(f"Sales Analytics Control Center • Last Updated: {datetime.datetime.now().strftime('%A, %B %d, %Y')}")
+if menu == "COMMAND HUD // Dashboard":
+    st.markdown("<h2>UPLINK ESTABLISHED. WELCOME COMMANDER.</h2>", unsafe_allow_html=True)
+    st.caption(f"Synchronized Timestamp: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')} // SECURE")
     st.divider()
 
-    with st.spinner("Processing live operational ledger..."):
+    with st.spinner("Decoding operational ledger arrays..."):
         metrics = engine_instance.generate_kpi_summary()
 
-    # Premium KPI Cards Row
+    # Tactical KPI Readouts
     col1, col2, col3, col4 = st.columns(4)
-    col1.metric("Total Gross Revenue", f"${metrics['revenue']:,.2f}", delta="Yield Metrics")
-    col2.metric("Operational Profit", f"${metrics['profit']:,.2f}", delta="Net Margins")
-    col3.metric("Volumetric Orders", f"{metrics['orders']:,}", delta="Transactions")
-    col4.metric("Average Ticket Value", f"${metrics['avg_ticket']:,.2f}")
+    col1.metric("SYS_REVENUE [GROSS]", f"${metrics['revenue']:,.2f}", delta="+ ONLINE")
+    col2.metric("SYS_PROFIT [NET]", f"${metrics['profit']:,.2f}", delta="+ OPTIMIZED")
+    col3.metric("TRANSACTION_VOL", f"{metrics['orders']:,}", delta="SYNCED")
+    col4.metric("AVG_TICKET_YIELD", f"${metrics['avg_ticket']:,.2f}")
     
     st.markdown("<br>", unsafe_allow_html=True)
     
-    # Context Asset Badges using Styled Containers
+    # Holographic Asset Trackers
     m1, m2, m3 = st.columns(3)
     with m1:
-        st.markdown(f'<div class="custom-card"><strong>Alpha Product Asset:</strong><br><span style="color:#60A5FA; font-size:18px;">🏆 {metrics["top_product"]}</span></div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="hud-card"><span style="color:#00F0FF; font-family:\'Share Tech Mono\';">PRIMARY ASSET DETECTED:</span><br><span style="font-size:22px; font-weight:bold; text-shadow:0 0 8px #fff;">⚡ {metrics["top_product"]}</span></div>', unsafe_allow_html=True)
     with m2:
-        st.markdown(f'<div class="custom-card"><strong>Top Segment Category:</strong><br><span style="color:#A78BFA; font-size:18px;">📁 {metrics["top_cat"]}</span></div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="hud-card"><span style="color:#FF00E6; font-family:\'Share Tech Mono\';">DOMINANT CLUSTER:</span><br><span style="font-size:22px; font-weight:bold; text-shadow:0 0 8px #fff;">📂 {metrics["top_cat"]}</span></div>', unsafe_allow_html=True)
     with m3:
-        st.markdown(f'<div class="custom-card"><strong>Dominant Sales Region:</strong><br><span style="color:#34D399; font-size:18px;">🌎 {metrics["top_region"]}</span></div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="hud-card"><span style="color:#39FF14; font-family:\'Share Tech Mono\';">TERRITORY CONTROL:</span><br><span style="font-size:22px; font-weight:bold; text-shadow:0 0 8px #fff;">🌐 {metrics["top_region"]}</span></div>', unsafe_allow_html=True)
 
     st.divider()
 
-    # Visual Matrix Section
+    # Visual HUD Matrix (Extreme Sci-Fi Charts)
     df = engine_instance.get_clean_dataframe()
     if df.empty:
-        st.warning("No enterprise records initialized yet. Please populate database variables in the Data Management tab.")
+        st.error(">> ERR_NO_DATA: Database array is empty. Initialize records in MATRIX panel.")
     else:
-        # Dark style palette configurations for Matplotlib matching dashboard theme
         plt.style.use('dark_background')
+        # Sci Fi Palette: Cyan, Pink, Neon Green, Yellow, Orange
+        scifi_colors = ['#00F0FF', '#FF00E6', '#39FF14', '#FFEA00', '#FF3C00']
+        
         fig, axes = plt.subplots(2, 3, figsize=(18, 10))
-        fig.patch.set_facecolor('none') # Transparent background for the figure to blend with CSS gradient
+        fig.patch.set_facecolor('#030712') # Deep terminal black
         plt.subplots_adjust(hspace=0.4, wspace=0.3)
 
-        # 1. Daily Revenue
+        # 1. Daily Revenue Velocity
         daily_sales = df.groupby('sale_date')['total_sales'].sum()
-        axes[0, 0].plot(daily_sales.index, daily_sales.values, color='#6366F1', marker='o', linewidth=2, markersize=6)
-        axes[0, 0].fill_between(daily_sales.index, daily_sales.values, color='#6366F1', alpha=0.1)
-        axes[0, 0].set_title("Daily Revenue Velocity", color='#F8FAFC', pad=10, fontweight='bold')
+        axes[0, 0].plot(daily_sales.index, daily_sales.values, color='#00F0FF', marker='o', linewidth=2, markersize=5)
+        axes[0, 0].fill_between(daily_sales.index, daily_sales.values, color='#00F0FF', alpha=0.15)
+        axes[0, 0].set_title("REVENUE_VELOCITY_MATRIX", color='#00F0FF', pad=10, fontname='monospace')
         axes[0, 0].tick_params(axis='x', rotation=45, colors='#94A3B8')
-        axes[0, 0].set_facecolor('none')
 
-        # 2. Monthly Sales
+        # 2. Monthly Distribution Segment
         df['month_period'] = df['sale_date'].dt.to_period('M').astype(str)
         monthly_sales = df.groupby('month_period')['total_sales'].sum()
-        axes[0, 1].bar(monthly_sales.index, monthly_sales.values, color='#3B82F6', alpha=0.8)
-        axes[0, 1].set_title("Monthly Sales Distribution", color='#F8FAFC', pad=10, fontweight='bold')
+        axes[0, 1].bar(monthly_sales.index, monthly_sales.values, color='#FF00E6', edgecolor='#FFF', linewidth=1)
+        axes[0, 1].set_title("MONTHLY_DIST_ARRAY", color='#FF00E6', pad=10, fontname='monospace')
         axes[0, 1].tick_params(axis='x', rotation=45, colors='#94A3B8')
-        axes[0, 1].set_facecolor('none')
 
-        # 3. Net Capital Profit Trend
+        # 3. Profit Trend Vector
         daily_profit = df.groupby('sale_date')['total_profit'].sum()
-        axes[0, 2].plot(daily_profit.index, daily_profit.values, color='#10B981', marker='s', linewidth=2)
-        axes[0, 2].fill_between(daily_profit.index, daily_profit.values, color='#10B981', alpha=0.1)
-        axes[0, 2].set_title("Net Capital Profit Trend", color='#F8FAFC', pad=10, fontweight='bold')
+        axes[0, 2].plot(daily_profit.index, daily_profit.values, color='#39FF14', marker='s', linewidth=2)
+        axes[0, 2].fill_between(daily_profit.index, daily_profit.values, color='#39FF14', alpha=0.15)
+        axes[0, 2].set_title("PROFIT_TREND_VECTOR", color='#39FF14', pad=10, fontname='monospace')
         axes[0, 2].tick_params(axis='x', rotation=45, colors='#94A3B8')
-        axes[0, 2].set_facecolor('none')
 
-        # 4. Top 5 Products
+        # 4. Top 5 Assets 
         top_prods = df.groupby('product_name')['total_sales'].sum().sort_values(ascending=False).head(5)
-        axes[1, 0].barh(top_prods.index, top_prods.values, color='#8B5CF6', alpha=0.8)
-        axes[1, 0].set_title("Top 5 Product Assets", color='#F8FAFC', pad=10, fontweight='bold')
+        axes[1, 0].barh(top_prods.index, top_prods.values, color='#FFEA00', edgecolor='#FFF')
+        axes[1, 0].set_title("TOP_5_ASSETS_DETECTED", color='#FFEA00', pad=10, fontname='monospace')
         axes[1, 0].invert_yaxis()
         axes[1, 0].tick_params(colors='#94A3B8')
-        axes[1, 0].set_facecolor('none')
 
-        # 5. Category Mix
+        # 5. Category Mix Radial
         cat_shares = df.groupby('category')['total_sales'].sum()
-        axes[1, 1].pie(cat_shares.values, labels=cat_shares.index, autopct='%1.1f%%', colors=['#6366F1', '#10B981', '#8B5CF6', '#F59E0B', '#EC4899'], textprops={'color': "#F8FAFC", 'weight': 'bold'})
-        axes[1, 1].set_title("Categorical Mix Matrix", color='#F8FAFC', pad=10, fontweight='bold')
-        axes[1, 1].set_facecolor('none')
+        axes[1, 1].pie(cat_shares.values, labels=cat_shares.index, autopct='%1.1f%%', colors=scifi_colors, textprops={'color': "#FFF", 'weight': 'bold', 'fontname': 'monospace'})
+        axes[1, 1].set_title("CLUSTER_MIX_RADIAL", color='#FFF', pad=10, fontname='monospace')
 
-        # 6. Regional Weights
+        # 6. Region Map Weights
         reg_shares = df.groupby('region')['total_sales'].sum()
-        axes[1, 2].bar(reg_shares.index, reg_shares.values, color='#06B6D4', alpha=0.8)
-        axes[1, 2].set_title("Regional Revenue Weights", color='#F8FAFC', pad=10, fontweight='bold')
+        axes[1, 2].bar(reg_shares.index, reg_shares.values, color='#FF3C00', edgecolor='#FFF')
+        axes[1, 2].set_title("TERRITORY_WEIGHTS", color='#FF3C00', pad=10, fontname='monospace')
         axes[1, 2].tick_params(colors='#94A3B8')
-        axes[1, 2].set_facecolor('none')
 
-        # Format axes grids
+        # Format axes grids for HUD look
         for ax in axes.flat:
-            ax.grid(True, alpha=0.1, linestyle='--')
+            ax.set_facecolor('#030712')
+            ax.grid(True, color='#00F0FF', alpha=0.1, linestyle='-', linewidth=0.5)
             ax.spines['top'].set_visible(False)
             ax.spines['right'].set_visible(False)
-            ax.spines['left'].set_color('#334155')
-            ax.spines['bottom'].set_color('#334155')
+            ax.spines['left'].set_color('#00F0FF')
+            ax.spines['bottom'].set_color('#00F0FF')
 
-        st.pyplot(fig, transparent=True)
+        st.pyplot(fig, transparent=False)
 
 
-elif menu == "📝 Data Management":
-    st.title("Data Management Engine")
-    st.caption("Inspect pipeline variables, add transactional assets, or adjust current schema records.")
+elif menu == "MATRIX // Data Link":
+    st.markdown("<h2>MATRIX DATALINK ENGINE</h2>", unsafe_allow_html=True)
+    st.caption("Manipulate raw schema parameters and commit vectors to the core.")
     st.write("<br>", unsafe_allow_html=True)
     
-    tabs = st.tabs(["🔍 View & Filter Database", "➕ Add New Record", "🔄 Modify Existing Record"])
+    tabs = st.tabs(["[ 🔍 QUERY DATABASE ]", "[ ➕ INJECT RECORD ]", "[ ⚠️ OVERRIDE RECORD ]"])
     
     with tabs[0]:
-        st.subheader("Filter Matrix Parameters")
+        st.subheader(">> Filter Query Parameters")
         with st.form("filter_form"):
             col1, col2, col3 = st.columns(3)
-            search_name = col1.text_input("Search Product Asset")
-            search_cat = col2.selectbox("Category Dropdown", ["All", "Electronics", "Furniture", "Networking", "Apparel"])
-            search_region = col3.selectbox("Region Dropdown", ["All", "North", "South", "East", "West"])
+            search_name = col1.text_input("Asset ID Scan")
+            search_cat = col2.selectbox("Cluster Target", ["All", "Electronics", "Furniture", "Networking", "Apparel"])
+            search_region = col3.selectbox("Territory Target", ["All", "North", "South", "East", "West"])
             
             col4, col5, col6 = st.columns(3)
-            start_date = col4.date_input("Start Date Filter", value=None)
-            end_date = col5.date_input("End Date Filter", value=None)
-            sort_by = col6.selectbox("Sort Engine Priority", ["Date Desc", "Date Asc", "Revenue Desc", "Profit Desc", "Product Name"])
+            start_date = col4.date_input("Timeframe Alpha", value=None)
+            end_date = col5.date_input("Timeframe Omega", value=None)
+            sort_by = col6.selectbox("Sort Algorithm", ["Date Desc", "Date Asc", "Revenue Desc", "Profit Desc", "Product Name"])
             
-            filter_submitted = st.form_submit_button("🔄 Refresh Data Matrix")
+            filter_submitted = st.form_submit_button(">> EXECUTE QUERY SCAN")
         
-        with st.spinner("Fetching active records..."):
+        with st.spinner("Extracting matrix rows..."):
             records = DataController.get_filtered_records(
                 search_name, search_cat, search_region, start_date, end_date, sort_by
             )
@@ -645,95 +675,94 @@ elif menu == "📝 Data Management":
         if records:
             df_records = pd.DataFrame(records)
             st.dataframe(
-                df_records.style.background_gradient(cmap='Purples', subset=['Total Sales', 'Profit']), 
+                df_records.style.background_gradient(cmap='cool', subset=['Total Sales', 'Profit']), 
                 use_container_width=True, 
                 hide_index=True
             )
         else:
-            st.info("No records match the current filter parameters.")
+            st.info(">> NO DATA VECTORS FOUND IN CURRENT PARAMETERS.")
 
     with tabs[1]:
-        st.subheader("Commit New Entry Vector")
+        st.subheader(">> Construct Data Vector")
         with st.form("add_record_form", clear_on_submit=True):
             a_col1, a_col2 = st.columns(2)
-            prod_name = a_col1.text_input("Product Name Identifier")
-            category = a_col2.selectbox("Operational Category Segment", ["Electronics", "Furniture", "Networking", "Apparel"])
+            prod_name = a_col1.text_input("Asset Designation")
+            category = a_col2.selectbox("Cluster Assignment", ["Electronics", "Furniture", "Networking", "Apparel"])
             
             a_col3, a_col4 = st.columns(2)
-            qty = a_col3.number_input("Quantity Volumetric Component", min_value=1, step=1)
-            unit_price = a_col4.number_input("Unit Price Baseline ($)", min_value=0.0, step=0.5)
+            qty = a_col3.number_input("Volume Index", min_value=1, step=1)
+            unit_price = a_col4.number_input("Unit Value (Credits)", min_value=0.0, step=0.5)
             
             a_col5, a_col6 = st.columns(2)
-            cost_price = a_col5.number_input("Cost Price Target ($)", min_value=0.0, step=0.5)
-            region = a_col6.selectbox("Target Regional Territory", ["North", "South", "East", "West"])
+            cost_price = a_col5.number_input("Cost Value (Credits)", min_value=0.0, step=0.5)
+            region = a_col6.selectbox("Territory Link", ["North", "South", "East", "West"])
             
-            sale_date = st.date_input("Sale Verification Date", datetime.date.today())
+            sale_date = st.date_input("Timestamp Log", datetime.date.today())
             
-            submit = st.form_submit_button("➕ Commit Entry to System")
+            submit = st.form_submit_button(">> COMMIT VECTOR TO CORE")
             if submit:
                 success, msg = DataController.add_sale_record(prod_name, category, qty, unit_price, cost_price, sale_date, region)
                 if success:
-                    st.success(msg)
+                    st.success(f">> SUCCESS: {msg}")
                 else:
-                    st.error(msg)
+                    st.error(f">> ERR: {msg}")
 
     with tabs[2]:
-        st.subheader("Update or Drop Structural Record")
+        st.subheader(">> Destructive Override Protocol")
         all_recs = DataController.get_filtered_records()
         if not all_recs:
-            st.warning("No records exist in the system architecture currently.")
+            st.warning(">> WARNING: MATRIX IS EMPTY.")
         else:
             df_all = pd.DataFrame(all_recs)
             st.dataframe(df_all[['ID', 'Product Asset', 'Date', 'Total Sales']], height=200, use_container_width=True, hide_index=True)
             
-            target_id = st.number_input("Target Record ID Sequence to Modify/Delete", min_value=1, step=1)
+            target_id = st.number_input("Target Vector ID for Override", min_value=1, step=1)
             st.divider()
             
             col_u, col_d = st.columns(2)
             with col_u:
                 with st.form("update_form"):
-                    st.markdown(f"#### Update Values for ID: **{target_id}**")
-                    u_prod_name = st.text_input("New Product Name Input")
-                    u_category = st.selectbox("New Category Assignment", ["Electronics", "Furniture", "Networking", "Apparel"])
-                    u_qty = st.number_input("New Quantity Volume", min_value=1, step=1)
-                    u_unit_price = st.number_input("New Unit Price Index ($)", min_value=0.0, step=0.5)
-                    u_cost_price = st.number_input("New Cost Price Index ($)", min_value=0.0, step=0.5)
-                    u_region = st.selectbox("New Target Region Domain", ["North", "South", "East", "West"])
-                    u_sale_date = st.date_input("New Timestamp Vector")
+                    st.markdown(f"<span style='color:#00F0FF; font-family:monospace;'>UPDATING ID: [{target_id}]</span>", unsafe_allow_html=True)
+                    u_prod_name = st.text_input("Modify Asset Designation")
+                    u_category = st.selectbox("Modify Cluster", ["Electronics", "Furniture", "Networking", "Apparel"])
+                    u_qty = st.number_input("Modify Volume", min_value=1, step=1)
+                    u_unit_price = st.number_input("Modify Unit Value", min_value=0.0, step=0.5)
+                    u_cost_price = st.number_input("Modify Cost Value", min_value=0.0, step=0.5)
+                    u_region = st.selectbox("Modify Territory", ["North", "South", "East", "West"])
+                    u_sale_date = st.date_input("Modify Timestamp")
                     
-                    if st.form_submit_button("🔄 Update Specified Record"):
+                    if st.form_submit_button(">> EXECUTE RE-WRITE"):
                         success, msg = DataController.update_sale_record(
                             target_id, u_prod_name, u_category, u_qty, u_unit_price, u_cost_price, u_sale_date, u_region
                         )
                         if success:
-                            st.success(msg)
+                            st.success(f">> {msg}")
                             st.rerun()
                         else:
-                            st.error(msg)
+                            st.error(f">> ERR: {msg}")
             with col_d:
-                st.markdown("#### Destructive Actions Zone")
-                st.info("Dropping database records is permanent and will rewrite structural OLS modeling parameters.")
-                if st.button("🗑️ Drop Record Permanently (Delete)", type="primary", use_container_width=True):
+                st.markdown("<span style='color:#FF00E6; font-family:monospace;'>WARNING: PURGE IS PERMANENT.</span>", unsafe_allow_html=True)
+                if st.button(">> PURGE VECTOR (DELETE)", type="primary", use_container_width=True):
                     success, msg = DataController.delete_sale_record(target_id)
                     if success:
-                        st.success(msg)
+                        st.success(f">> PURGE COMPLETE: {msg}")
                         st.rerun()
                     else:
-                        st.error(msg)
+                        st.error(f">> ERR: {msg}")
 
 
-elif menu == "🔮 Predictive ML Models":
-    st.title("Horizon Target Forecasting Configuration")
-    st.caption("Scikit-Learn Ordinary Least Squares (OLS) Linear Regression Processing Matrix.")
+elif menu == "NEURAL NET // Forecast":
+    st.markdown("<h2>NEURAL PREDICTION MATRIX</h2>", unsafe_allow_html=True)
+    st.caption("Scikit-Learn OLS Machine Learning Architecture // Trajectory Prediction")
     st.divider()
     
     col1, col2 = st.columns([1, 2])
     with col1:
-        horizon = st.selectbox("Forecast Horizon Interval Selection", ["30 Days Target", "90 Days Extended Target"])
+        horizon = st.selectbox("Forecast Chrono-Horizon", ["[ 30 CYCLES / DAYS ]", "[ 90 CYCLES / DAYS ]"])
         st.markdown("""
-        <div style="font-size: 13px; color:#94A3B8; background:rgba(15, 23, 42, 0.6); padding:16px; border-radius:12px; border:1px solid rgba(99, 102, 241, 0.3); backdrop-filter: blur(10px);">
-            <strong>Engine Specifications:</strong><br>
-            Maps timeline vectors using chronological ordinals to execute linear trajectory optimizations on operational data streams.
+        <div style="font-family:'Share Tech Mono'; color:#39FF14; background:rgba(3,7,18,0.9); padding:16px; border:1px solid #39FF14; box-shadow:0 0 10px rgba(57,255,20,0.2);">
+            <strong>>> ALGORITHM STATUS: ONLINE</strong><br><br>
+            Mapping chronological vectors to execute linear optimizations on raw streams. Target parameters isolated.
         </div>
         """, unsafe_allow_html=True)
     
@@ -741,79 +770,76 @@ elif menu == "🔮 Predictive ML Models":
     df = engine_instance.get_clean_dataframe()
     
     if df.empty or len(df) < 3:
-        st.warning("Insufficient vector density. Please supply more historical date metrics to generate models.")
+        st.warning(">> INSUFFICIENT DATA MASS. REQUIRE MORE TIMESTAMPS FOR OLS LOCK.")
     else:
         plt.style.use('dark_background')
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
-        fig.patch.set_facecolor('none')
+        fig.patch.set_facecolor('#030712')
         
         # Gross Revenue Forecast Plot
         daily_sales = df.groupby('sale_date')['total_sales'].sum()
-        ax1.plot(daily_sales.index, daily_sales.values, color='#3B82F6', marker='o', label='Historical Track', linewidth=2)
+        ax1.plot(daily_sales.index, daily_sales.values, color='#00F0FF', marker='o', label='Recorded Trace', linewidth=2)
         f_dates, f_preds = engine_instance.run_predictive_forecasting(horizon_days, 'total_sales')
         if len(f_dates) > 0:
-            ax1.plot(f_dates, f_preds, color='#F59E0B', linestyle='--', linewidth=3, label=f'OLS Projection ({horizon_days}D)')
-            ax1.fill_between(f_dates, f_preds, color='#F59E0B', alpha=0.1)
+            ax1.plot(f_dates, f_preds, color='#FFEA00', linestyle='--', linewidth=3, label=f'OLS TARGET [{horizon_days}D]')
+            ax1.fill_between(f_dates, f_preds, color='#FFEA00', alpha=0.1)
         
-        ax1.set_title("Gross Revenue Trajectory Forecast Model", color='#F8FAFC', fontweight='bold')
+        ax1.set_title("GROSS REVENUE TRAJECTORY [NEURAL RUN]", color='#00F0FF', fontname='monospace')
         ax1.tick_params(axis='x', rotation=45, colors='#94A3B8')
-        ax1.grid(True, alpha=0.15)
-        ax1.set_facecolor('none')
-        ax1.spines['top'].set_visible(False)
-        ax1.spines['right'].set_visible(False)
-        ax1.legend(facecolor='#0F172A', edgecolor='none')
+        ax1.grid(True, color='#00F0FF', alpha=0.1, linestyle='-')
+        ax1.set_facecolor('#030712')
+        for spine in ax1.spines.values(): spine.set_visible(False)
+        ax1.legend(facecolor='#030712', edgecolor='#00F0FF', labelcolor='#FFF')
 
         # Profit Forecast Plot
         daily_profit = df.groupby('sale_date')['total_profit'].sum()
-        ax2.plot(daily_profit.index, daily_profit.values, color='#10B981', marker='s', label='Historical Net Yield', linewidth=2)
+        ax2.plot(daily_profit.index, daily_profit.values, color='#39FF14', marker='s', label='Recorded Yield', linewidth=2)
         f_dates_p, f_preds_p = engine_instance.run_predictive_forecasting(horizon_days, 'total_profit')
         if len(f_dates_p) > 0:
-            ax2.plot(f_dates_p, f_preds_p, color='#EF4444', linestyle='--', linewidth=3, label=f'Profit Model Target ({horizon_days}D)')
-            ax2.fill_between(f_dates_p, f_preds_p, color='#EF4444', alpha=0.1)
+            ax2.plot(f_dates_p, f_preds_p, color='#FF00E6', linestyle='--', linewidth=3, label=f'PROFIT TARGET [{horizon_days}D]')
+            ax2.fill_between(f_dates_p, f_preds_p, color='#FF00E6', alpha=0.1)
             
-        ax2.set_title("Net Capital Margins Structural Forecast", color='#F8FAFC', fontweight='bold')
+        ax2.set_title("NET CAPITAL MARGINS [NEURAL RUN]", color='#39FF14', fontname='monospace')
         ax2.tick_params(axis='x', rotation=45, colors='#94A3B8')
-        ax2.grid(True, alpha=0.15)
-        ax2.set_facecolor('none')
-        ax2.spines['top'].set_visible(False)
-        ax2.spines['right'].set_visible(False)
-        ax2.legend(facecolor='#0F172A', edgecolor='none')
+        ax2.grid(True, color='#39FF14', alpha=0.1, linestyle='-')
+        ax2.set_facecolor('#030712')
+        for spine in ax2.spines.values(): spine.set_visible(False)
+        ax2.legend(facecolor='#030712', edgecolor='#39FF14', labelcolor='#FFF')
 
-        st.pyplot(fig, transparent=True)
+        st.pyplot(fig, transparent=False)
 
 
-elif menu == "🤖 AI Strategic Analysis":
-    st.title("AI Enterprise Strategic Core Engine")
-    st.caption("Automated prescriptive summaries and transactional alpha analytics models.")
+elif menu == "AI ORACLE // Strategy":
+    st.markdown("<h2>AI ORACLE HEURISTICS</h2>", unsafe_allow_html=True)
+    st.caption("Automated prescriptive machine-logic outputs.")
     st.divider()
     
-    with st.spinner("Compiling automated strategic heuristics..."):
+    with st.spinner("AI Oracle is computing tactical parameters..."):
         insights = engine_instance.generate_ai_insights_dictionary()
     
     sections = [
-        ("🏆 Top Performing Corporate Assets", insights["top_products"], "Maximum volume metrics output vector."),
-        ("📉 Lagging Operational Matrix Segments", insights["worst_products"], "Sub-optimal optimization baseline target."),
-        ("💎 Profit Maximization Core Units", insights["profitable_category"], "Highest alpha return structural channel."),
-        ("🗺️ Core Geographical Domain Stronghold", insights["profitable_region"], "Dominant territory conversion density."),
-        ("📈 Systemic Revenue Trend Matrix Velocity", insights["revenue_trend"], "Gross transaction speed indicator."),
-        ("📊 Systemic Capital Profit Margin Track", insights["profit_trend"], "Delta margin evaluation path."),
-        ("🚀 Composite System Expansion Metrics", insights["growth_trend"], "General industrial strength evaluation framework."),
-        ("💡 Strategic Corporate Business Execution Directive", insights["business_recommendations"], "Prescriptive administrative operations trajectory."),
-        ("📦 Logistical Inventory Asset Optimization Allocation", insights["inventory_recommendations"], "Supply stream defensive holding instructions."),
-        ("📣 Promotional Outreach Targeted Deployment Matrix", insights["marketing_recommendations"], "Geo-targeted public scaling framework configuration.")
+        ("👑 ALPHA ASSETS", insights["top_products"], "Maximal vector yield identified."),
+        ("⚠️ CRITICAL LAG", insights["worst_products"], "Sub-optimal drain detected. Terminate or optimize."),
+        ("💎 CORE MULTIPLIER", insights["profitable_category"], "Highest capital return cluster."),
+        ("🌐 DOMAIN STRONGHOLD", insights["profitable_region"], "Primary territorial anchor point."),
+        ("📈 VELOCITY VECTOR", insights["revenue_trend"], "Macro systemic speed indicator."),
+        ("📊 MARGIN DELTA", insights["profit_trend"], "Capital retention pathway evaluation."),
+        ("🚀 SYSTEM EXPANSION", insights["growth_trend"], "Overall structural integrity trajectory."),
+        ("DIRECTIVE: OPS", insights["business_recommendations"], "Primary AI administrative command."),
+        ("DIRECTIVE: LOGISTICS", insights["inventory_recommendations"], "Asset holding and defense instruction."),
+        ("DIRECTIVE: BROADCAST", insights["marketing_recommendations"], "Outreach framework configuration.")
     ]
 
-    # Grid Display for Insights Matrix with Elite Styling
     for i in range(0, len(sections), 2):
         col_left, col_right = st.columns(2)
         
         with col_left:
             title, desc, context = sections[i]
             st.markdown(f"""
-            <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(99, 102, 241, 0.2); border-top: 1px solid rgba(255,255,255,0.1); padding: 24px; border-radius: 16px; margin-bottom: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); backdrop-filter: blur(10px); animation: fadeInUp 0.8s ease-out backwards; transition: transform 0.3s ease;">
-                <h4 style="color: #818CF8; margin-top:0; letter-spacing: 0.5px;">{title}</h4>
-                <p style="font-size: 18px; font-weight: 700; margin: 12px 0; color: #F8FAFC;">{desc}</p>
-                <small style="color: #94A3B8; font-style: italic;">Context: {context}</small>
+            <div class="hud-card" style="border-color:#00F0FF; box-shadow:0 0 15px rgba(0,240,255,0.1);">
+                <h4 style="color: #00F0FF; margin-top:0; font-family:'Share Tech Mono';">> {title}</h4>
+                <p style="font-size: 18px; font-weight: bold; margin: 12px 0; color: #FFF; text-shadow:0 0 5px rgba(255,255,255,0.3);">{desc}</p>
+                <small style="color: #94A3B8; font-family:monospace;">[LOG] {context}</small>
             </div>
             """, unsafe_allow_html=True)
             
@@ -821,145 +847,139 @@ elif menu == "🤖 AI Strategic Analysis":
             with col_right:
                 title, desc, context = sections[i+1]
                 st.markdown(f"""
-                <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(16, 185, 129, 0.2); border-top: 1px solid rgba(255,255,255,0.1); padding: 24px; border-radius: 16px; margin-bottom: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); backdrop-filter: blur(10px); animation: fadeInUp 0.8s ease-out backwards; transition: transform 0.3s ease;">
-                    <h4 style="color: #34D399; margin-top:0; letter-spacing: 0.5px;">{title}</h4>
-                    <p style="font-size: 18px; font-weight: 700; margin: 12px 0; color: #F8FAFC;">{desc}</p>
-                    <small style="color: #94A3B8; font-style: italic;">Context: {context}</small>
+                <div class="hud-card" style="border-color:#FF00E6; box-shadow:0 0 15px rgba(255,0,230,0.1);">
+                    <h4 style="color: #FF00E6; margin-top:0; font-family:'Share Tech Mono';">> {title}</h4>
+                    <p style="font-size: 18px; font-weight: bold; margin: 12px 0; color: #FFF; text-shadow:0 0 5px rgba(255,255,255,0.3);">{desc}</p>
+                    <small style="color: #94A3B8; font-family:monospace;">[LOG] {context}</small>
                 </div>
                 """, unsafe_allow_html=True)
 
 
-elif menu == "📁 Reports & File Exports":
-    st.title("Enterprise Financial Data Export Center")
-    st.caption("Compile system variables into automated downstream ledgers and summaries.")
+elif menu == "EXTRACT // Datacores":
+    st.markdown("<h2>DATA EXTRACTION TERMINAL</h2>", unsafe_allow_html=True)
+    st.caption("Compile raw matrix logic into human-readable hard formats.")
     st.divider()
     
     df = engine_instance.get_clean_dataframe()
     
     if df.empty:
-        st.warning("There is no structural data to export yet.")
+        st.error(">> ERR_NO_DATA: Matrix empty. Extraction aborted.")
     else:
-        st.markdown("### Select Target Export Channel:")
+        st.markdown("<h3 style='color:#39FF14;'>SELECT EXTRACTION PROTOCOL:</h3>", unsafe_allow_html=True)
         
-        # CSV Export Card Block
-        st.markdown("#### 📄 Flat Ledger Formats")
+        # CSV
+        st.markdown("<span style='font-family:monospace; color:#00F0FF;'>[ PROTOCOL 1: FLAT LEDGER (CSV) ]</span>", unsafe_allow_html=True)
         csv = df.to_csv(index=False).encode('utf-8')
         st.download_button(
-            label="Export Core Ledger to Flat File (CSV)",
+            label=">> INITIALIZE CSV DOWNLOAD",
             data=csv,
-            file_name='enterprise_ledger.csv',
+            file_name='tactical_ledger.csv',
             mime='text/csv',
             use_container_width=True
         )
         
         st.write("<br>", unsafe_allow_html=True)
         
-        # Excel Export Card Block
-        st.markdown("#### 📈 Dynamic Workbook Sheets")
+        # Excel
+        st.markdown("<span style='font-family:monospace; color:#00F0FF;'>[ PROTOCOL 2: DYNAMIC WORKBOOK (XLSX) ]</span>", unsafe_allow_html=True)
         excel_buffer = io.BytesIO()
         with pd.ExcelWriter(excel_buffer, engine='openpyxl') as writer:
-            df.to_excel(writer, index=False, sheet_name='Ledger')
+            df.to_excel(writer, index=False, sheet_name='Matrix')
         st.download_button(
-            label="Compile Operational Sheet Workbooks (XLSX)",
+            label=">> INITIALIZE EXCEL DOWNLOAD",
             data=excel_buffer.getvalue(),
-            file_name='enterprise_ledger.xlsx',
+            file_name='tactical_ledger.xlsx',
             mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             use_container_width=True
         )
         
         st.write("<br>", unsafe_allow_html=True)
 
-        # PDF Compilation Card Block
-        st.markdown("#### 👑 High-Executive Summary Documents")
+        # PDF
+        st.markdown("<span style='font-family:monospace; color:#FF00E6;'>[ PROTOCOL 3: ORACLE BRIEFING (PDF) ]</span>", unsafe_allow_html=True)
         metrics = engine_instance.generate_kpi_summary()
         insights = engine_instance.generate_ai_insights_dictionary()
         
         pdf = FPDF()
         pdf.add_page()
-        pdf.set_font("Helvetica", style="B", size=18)
-        pdf.cell(0, 12, txt="Enterprise Data Analytics & Predictive Forecast Report", ln=1, align="C")
-        pdf.set_font("Helvetica", size=10)
-        pdf.cell(0, 6, txt=f"Generated Date Engine Sequence: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')}", ln=1, align="C")
+        pdf.set_font("Courier", style="B", size=18)
+        pdf.cell(0, 12, txt="[ DATACORE OS: TACTICAL BRIEFING ]", ln=1, align="C")
+        pdf.set_font("Courier", size=10)
+        pdf.cell(0, 6, txt=f"Timestamp: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')}", ln=1, align="C")
         pdf.ln(10)
-        pdf.set_font("Helvetica", style="B", size=14)
-        pdf.cell(0, 8, txt="1. Corporate Operations Overview", ln=1)
-        pdf.set_font("Helvetica", size=11)
-        pdf.multi_cell(0, 6, txt="This analytical executive summary encompasses automated transactional operational pipelines, parsing live margins, asset velocities, and linear machine learning future targets.")
+        pdf.set_font("Courier", style="B", size=14)
+        pdf.cell(0, 8, txt=">> 01. MACRO SCAN", ln=1)
+        pdf.set_font("Courier", size=11)
+        pdf.multi_cell(0, 6, txt="Automated transactional extraction complete. Neural net modeling applied to current timeline vectors.")
         pdf.ln(5)
-        pdf.set_font("Helvetica", style="B", size=14)
-        pdf.cell(0, 8, txt="2. Core Financial KPI Summary Matrix", ln=1)
-        pdf.set_font("Helvetica", size=11)
-        pdf.cell(90, 7, txt=f"Total Gross Revenue: ${metrics['revenue']:,.2f}", ln=1)
-        pdf.cell(90, 7, txt=f"Total Net Capital Profit: ${metrics['profit']:,.2f}", ln=1)
-        pdf.cell(90, 7, txt=f"Total Processed Volume Orders: {metrics['orders']}", ln=1)
-        pdf.cell(90, 7, txt=f"Average Order Ticket Value: ${metrics['avg_ticket']:,.2f}", ln=1)
+        pdf.set_font("Courier", style="B", size=14)
+        pdf.cell(0, 8, txt=">> 02. CORE METRICS", ln=1)
+        pdf.set_font("Courier", size=11)
+        pdf.cell(90, 7, txt=f"SYS_REVENUE: ${metrics['revenue']:,.2f}", ln=1)
+        pdf.cell(90, 7, txt=f"SYS_PROFIT : ${metrics['profit']:,.2f}", ln=1)
+        pdf.cell(90, 7, txt=f"VOL_ORDERS : {metrics['orders']}", ln=1)
+        pdf.cell(90, 7, txt=f"AVG_TICKET : ${metrics['avg_ticket']:,.2f}", ln=1)
         pdf.ln(5)
-        pdf.set_font("Helvetica", style="B", size=14)
-        pdf.cell(0, 8, txt="3. Structural Margin Analytics & AI Insights", ln=1)
-        pdf.set_font("Helvetica", size=11)
-        pdf.cell(0, 7, txt=f"Alpha Product Asset: {metrics['top_product']}", ln=1)
-        pdf.cell(0, 7, txt=f"Dominant Structural Segment Category: {metrics['top_cat']}", ln=1)
-        pdf.cell(0, 7, txt=f"Revenue Horizon State: {insights['revenue_trend']}", ln=1)
-        pdf.cell(0, 7, txt=f"Profit Horizon State: {insights['profit_trend']}", ln=1)
+        pdf.set_font("Courier", style="B", size=14)
+        pdf.cell(0, 8, txt=">> 03. ORACLE INSIGHTS", ln=1)
+        pdf.set_font("Courier", size=11)
+        pdf.cell(0, 7, txt=f"ALPHA ASSET : {metrics['top_product']}", ln=1)
+        pdf.cell(0, 7, txt=f"DOMINANT CLUSTER : {metrics['top_cat']}", ln=1)
+        pdf.cell(0, 7, txt=f"VELOCITY VECTOR: {insights['revenue_trend']}", ln=1)
+        pdf.cell(0, 7, txt=f"MARGIN DELTA: {insights['profit_trend']}", ln=1)
         pdf.ln(4)
-        pdf.set_font("Helvetica", style="B", size=12)
-        pdf.cell(0, 7, txt="Corporate Strategy Action Items:", ln=1)
-        pdf.set_font("Helvetica", size=10)
-        pdf.multi_cell(0, 5, txt=f"- Executive Recommendation: {insights['business_recommendations']}")
-        pdf.multi_cell(0, 5, txt=f"- Logistics Framework: {insights['inventory_recommendations']}")
-        pdf.multi_cell(0, 5, txt=f"- Outreach Allocation: {insights['marketing_recommendations']}")
+        pdf.set_font("Courier", style="B", size=12)
+        pdf.cell(0, 7, txt=">> STRATEGIC DIRECTIVES:", ln=1)
+        pdf.set_font("Courier", size=10)
+        pdf.multi_cell(0, 5, txt=f" - OPS: {insights['business_recommendations']}")
+        pdf.multi_cell(0, 5, txt=f" - LOGISTICS: {insights['inventory_recommendations']}")
+        pdf.multi_cell(0, 5, txt=f" - BROADCAST: {insights['marketing_recommendations']}")
         
         pdf_bytes = pdf.output(dest='S').encode('latin1')
         st.download_button(
-            label="Generate AI Executive Core Document (PDF)",
+            label=">> INITIALIZE PDF DOWNLOAD",
             data=pdf_bytes,
-            file_name="executive_summary.pdf",
+            file_name="tactical_briefing.pdf",
             mime="application/pdf",
             use_container_width=True
         )
 
 
-elif menu == "⚙️ System Settings":
-    st.title("Infrastructure Controls & Preferences")
-    st.caption("Manage back-end schema specifications and database rollback systems.")
+elif menu == "ROOT // Config":
+    st.markdown("<h2>ROOT ACCESS CONSOLE</h2>", unsafe_allow_html=True)
+    st.caption("WARNING: Manipulating root parameters can collapse the matrix.")
     st.divider()
     
     with st.container():
-        st.subheader("Visual Presentation Theme")
-        st.info("Theme presentation frameworks (Dark/Light Canvas variants) are natively handled by Streamlit. Customize layouts directly inside Settings -> Theme panels.")
-
-    st.write("<br>", unsafe_allow_html=True)
-
-    with st.container():
-        st.subheader("Data Core Architecture Specifications Matrix")
-        st.code(f"Database Model Form: SQLite 3 relational local engine\nTarget Active Endpoint Mapping: {DB_FILE}\nTable Validation Index: Schema definitions verified.", language="yaml")
+        st.markdown("<h3 style='color:#FF00E6;'>ENGINE SPECIFICATIONS</h3>", unsafe_allow_html=True)
+        st.code(f"DB_MODEL: SQLite 3 Neural Logic\nENDPOINT: {DB_FILE}\nSTATUS: VALIDATED AND LOCKED.", language="yaml")
     
     st.write("<br>", unsafe_allow_html=True)
 
     with st.container():
-        st.subheader("Administrative Disaster Recovery & Backup Pipelines")
-        st.markdown("Ensure state preservation by downloading a direct physical backup copy of the SQLite runtime binary ledger.")
+        st.markdown("<h3 style='color:#00F0FF;'>DISASTER RECOVERY UPLINK</h3>", unsafe_allow_html=True)
+        st.markdown("<span style='font-family:monospace; color:#94A3B8;'>Extract the raw binary ledger for cold storage.</span>", unsafe_allow_html=True)
         
         if os.path.exists(DB_FILE):
             with open(DB_FILE, "rb") as file:
                 st.download_button(
-                    label="💾 Download Raw Core Database Ledger (.db)",
+                    label=">> SECURE BINARY COPY (.db)",
                     data=file,
-                    file_name="business_analytics_backup.db",
+                    file_name="datacore_backup.db",
                     mime="application/octet-stream"
                 )
         
         st.divider()
-        st.markdown("#### Database Overwrite (Restore Pipeline)")
-        st.warning("🚨 WARNING: Uploading a configuration file here completely rewrites and overwrites current data mappings.")
+        st.markdown("<h4 style='color:#FF3C00;'>ROOT OVERWRITE PROTOCOL</h4>", unsafe_allow_html=True)
+        st.markdown("<span style='font-family:monospace; color:#FF3C00;'>🚨 WARNING: INJECTING A NEW CORE WILL OBLITERATE CURRENT TIMELINE.</span>", unsafe_allow_html=True)
         
-        uploaded_db = st.file_uploader("Upload .db Backup File Stream", type=["db"])
+        uploaded_db = st.file_uploader(">> UPLOAD .db CORE STREAM", type=["db"])
         if uploaded_db is not None:
-            if st.button("🚨 Confirm Core Overwrite Sequence", type="primary"):
+            if st.button(">> AUTHORIZE CORE REWRITE", type="primary"):
                 try:
                     engine.dispose()
                     with open(DB_FILE, "wb") as f:
                         f.write(uploaded_db.getbuffer())
-                    st.success("Database re-initialized from backup stream safely. Please refresh the page parameters.")
+                    st.success(">> OVERWRITE COMPLETE. TIMELINE STABILIZED. REFRESH HUD.")
                 except Exception as e:
-                    st.error(f"Database rewrite pipeline locked: {e}")
+                    st.error(f">> SYSTEM FAILURE: {e}")
